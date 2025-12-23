@@ -5,6 +5,7 @@ import br.ufc.poo.modelo.interfaces.Reproduzivel;
 public abstract class Midia implements Reproduzivel {
     private String titulo;
     private int duracao; // em segundos
+    
     private boolean favorita; 
     private boolean reproduzindo;
     // 1.Construtor, getters e setters
@@ -53,5 +54,6 @@ public abstract class Midia implements Reproduzivel {
     public void pausar() {
       this.reproduzindo = false;
       }
+
 
 }
