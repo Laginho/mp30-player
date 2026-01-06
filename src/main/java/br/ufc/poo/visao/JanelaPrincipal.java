@@ -1,17 +1,17 @@
 package br.ufc.poo.visao;
 
-import br.ufc.poo.controle.PlayerController;
+// import br.ufc.poo.controle.PlayerController;
 
 import javax.swing.*;
 import java.awt.*;
 
 public class JanelaPrincipal extends JFrame {
 
-    private PlayerController controller;
+    // private PlayerController controller;
     private TelaBiblioteca telaBiblioteca;
 
     public JanelaPrincipal() {
-        controller = new PlayerController();
+        // controller = new PlayerController();
         telaBiblioteca = new TelaBiblioteca();
 
         setTitle("MP30 Player");
