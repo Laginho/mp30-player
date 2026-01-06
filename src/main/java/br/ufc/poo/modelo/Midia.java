@@ -7,6 +7,7 @@ public abstract class Midia implements Reproduzivel {
     protected int duracao; // em segundos
     protected boolean favorita;
     protected boolean reproduzindo;
+    protected String caminho; 
     protected int tempoAtual; // em segundos
 
     // 1. Construtor
@@ -46,6 +47,13 @@ public abstract class Midia implements Reproduzivel {
     public boolean isReproduzindo() {
         return reproduzindo;
     }
+    public String getCaminho() {
+        return caminho;
+    }
+    public void setCaminho(String caminho) {
+        this.caminho = caminho;
+    }
+    
 
     // 3. Favoritos
     public void marcarComoFavorita() {
