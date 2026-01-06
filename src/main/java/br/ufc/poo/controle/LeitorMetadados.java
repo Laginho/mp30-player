@@ -22,7 +22,10 @@ public class LeitorMetadados {
             if (mp3file.hasId3v2Tag()) {
                 ID3v2 id3v2Tag = mp3file.getId3v2Tag();
                 titulo = id3v2Tag.getTitle();
-                artista = id3v2Tag.getArtist();
+                if (id3v2Tag.getArtist() != null)
+                    artista = id3v2Tag.getArtist();
+                else
+                    artista = id3v2Tag.getAlbumArtist();
                 album = id3v2Tag.getAlbum();
 
             } else if (mp3file.hasId3v1Tag()) {
@@ -37,7 +40,7 @@ public class LeitorMetadados {
                 titulo = arquivo.getName().replace(".mp3", "");
             }
 
-            return new Musica(titulo, duracao, artista, album, caminhoArquivo);
+            return new Musica(titulo, duracao, caminhoArquivo, artista, album);
 
         } catch (Exception e) {
             System.err.println("Erro ao ler metadados de: " + caminhoArquivo);
