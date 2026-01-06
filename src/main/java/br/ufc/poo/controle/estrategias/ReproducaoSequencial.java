@@ -6,8 +6,25 @@ import java.util.List;
 public class ReproducaoSequencial implements EstrategiaReproducao {
 
     @Override
-    public Midia obterProxima(List<Midia> fila, Midia atual) {
+    public Midia obterProxima(List<Midia> playlist, Midia atual) {
+        if (playlist == null || playlist.isEmpty()) {
+            return null;
+        }
+
+        if (atual == null) {
+            return playlist.get(0);
+        }
+
+        int indiceAtual = playlist.indexOf(atual);
+
+        if (indiceAtual == -1) {
+            return playlist.get(0);
+        }
+
+        if (indiceAtual + 1 < playlist.size()) {
+            return playlist.get(indiceAtual + 1);
+        }
+
         return null;
     }
-
 }
