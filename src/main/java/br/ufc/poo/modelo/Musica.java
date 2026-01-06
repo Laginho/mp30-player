@@ -23,7 +23,6 @@ public class Musica extends Midia {
     // Construtor simplificado (modo debug)
     public Musica(String titulo, int duracao, String caminho) {
         super(titulo, caminho, duracao);
-        this.caminho = caminho;
         this.artista = "Desconhecido";
         this.album = "Desconhecido";
     }
@@ -33,9 +32,8 @@ public class Musica extends Midia {
     // "/home/user/Musicas/bohemian_rhapsody.mp3");
     public Musica(String titulo, int duracao, String caminho, String artista, String album) {
         super(titulo, caminho, duracao);
-        this.caminho = caminho;
-        this.artista = artista;
-        this.album = album;
+        this.artista = (artista != null) ? artista : "Desconhecido";
+        this.album = (album != null) ? album : "Desconhecido";
     }
 
     @Override

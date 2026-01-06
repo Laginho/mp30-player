@@ -1,5 +1,6 @@
 package br.ufc.poo;
 
+import br.ufc.poo.controle.LeitorMetadados;
 import br.ufc.poo.controle.PlayerController;
 import br.ufc.poo.controle.estrategias.ReproducaoAleatoria;
 import br.ufc.poo.modelo.Musica;
@@ -27,16 +28,20 @@ public class Main {
         // Musica md4 = new Musica("Billie Jean", 294, "Michael Jackson", "Thriller");
 
         // em modo arquivo
-        Musica ma1 = new Musica("teste1", 200, "testeMusicas/teste1.mp3");
-        Musica ma2 = new Musica("teste2", 200, "testeMusicas/teste2.mp3");
-        Musica ma3 = new Musica("teste3", 200, "testeMusicas/teste3.mp3");
+        Musica ma1 = LeitorMetadados.lerMusica("testeMusicas/teste1.mp3");
+        Musica ma2 = LeitorMetadados.lerMusica("testeMusicas/teste2.mp3");
+        Musica ma3 = LeitorMetadados.lerMusica("testeMusicas/teste3.mp3");
 
         System.out.println("[SETUP] Adicionando músicas à biblioteca...");
         // player.adicionarNaPlaylist(md1);
         // player.adicionarNaPlaylist(md2);
         // player.adicionarNaPlaylist(md3);
-        player.adicionarNaPlaylist(ma1);
-        player.adicionarNaPlaylist(ma2);
+        if (ma1 != null)
+            player.adicionarNaPlaylist(ma1);
+        if (ma2 != null)
+            player.adicionarNaPlaylist(ma2);
+        if (ma3 != null)
+            player.adicionarNaPlaylist(ma3);
 
         // -----------------------------------------------------------------------
 
