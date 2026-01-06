@@ -12,7 +12,7 @@ public class Musica extends Midia {
     private String album;
     // 1.Construtores
 
-    // Construtor para debug
+    // Construtor sem áudio (modo debug)
     // Ex.: new Musica("Bohemian Rhapsody", 354, "Queen", "A Night at the Opera");
     public Musica(String titulo, int duracao, String artista, String album) {
         super(titulo, null, duracao);
@@ -20,14 +20,22 @@ public class Musica extends Midia {
         this.album = album;
     }
 
-    // Construtor (para arquivos MP3)
-    // Ex.: new Musica("bohemian_rhapsody.mp3",
-    // "/home/user/Musicas/bohemian_rhapsody.mp3");
+    // Construtor simplificado (modo debug)
     public Musica(String titulo, int duracao, String caminho) {
         super(titulo, caminho, duracao);
         this.caminho = caminho;
         this.artista = "Desconhecido";
         this.album = "Desconhecido";
+    }
+
+    // Construtor (para arquivos MP3)
+    // Ex.: new Musica("bohemian_rhapsody.mp3",
+    // "/home/user/Musicas/bohemian_rhapsody.mp3");
+    public Musica(String titulo, int duracao, String caminho, String artista, String album) {
+        super(titulo, caminho, duracao);
+        this.caminho = caminho;
+        this.artista = artista;
+        this.album = album;
     }
 
     @Override
