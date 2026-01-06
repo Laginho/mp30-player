@@ -6,11 +6,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-/* Aqui, usamos o algoritmo de Smart Shuffle
-
-Em vez de escolher aleatoriamente a cada vez, de forma naive, é definida
-uma fila aleatória, mas sua ordem é mantida constante durante a reprodução.
-*/
+// Aqui, usamos o algoritmo de Smart Shuffle.
+// Em vez de escolher aleatoriamente a cada vez, de forma naive, é definida
+// uma fila aleatória, mas sua ordem é mantida constante durante a reprodução.
 public class ReproducaoAleatoria implements EstrategiaReproducao {
 
     private List<Midia> listaEmbaralhada;
