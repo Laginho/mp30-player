@@ -1,10 +1,10 @@
 package br.ufc.poo.modelo;
 
 public class Audiobook extends Midia {
-    private String autor; 
+    private String autor;
 
-   public Audiobook(String titulo, int duracao, String autor) {
-        super(titulo, duracao);
+    public Audiobook(String titulo, String caminho, int duracao, String autor) {
+        super(titulo, caminho, duracao);
         this.autor = autor;
     }
 
@@ -14,7 +14,6 @@ public class Audiobook extends Midia {
 
     public void setAutor(String autor) {
         this.autor = autor;
-    }   
-
+    }
 
 }

@@ -36,5 +36,3 @@ public class JanelaPrincipal extends JFrame {
         setVisible(true);
     }
 }
-
-

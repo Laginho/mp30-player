@@ -4,15 +4,16 @@ import br.ufc.poo.modelo.interfaces.Reproduzivel;
 
 public abstract class Midia implements Reproduzivel {
     protected String titulo;
+    protected String caminho;
     protected int duracao; // em segundos
     protected boolean favorita;
     protected boolean reproduzindo;
-    protected String caminho; 
     protected int tempoAtual; // em segundos
 
     // 1. Construtor
-    public Midia(String titulo, int duracao) {
+    public Midia(String titulo, String caminho, int duracao) {
         this.titulo = titulo;
+        this.caminho = caminho;
         this.duracao = duracao;
         this.favorita = false;
         this.reproduzindo = false;
@@ -47,13 +48,14 @@ public abstract class Midia implements Reproduzivel {
     public boolean isReproduzindo() {
         return reproduzindo;
     }
+
     public String getCaminho() {
         return caminho;
     }
+
     public void setCaminho(String caminho) {
         this.caminho = caminho;
     }
-    
 
     // 3. Favoritos
     public void marcarComoFavorita() {
@@ -90,11 +92,7 @@ public abstract class Midia implements Reproduzivel {
 
     public void retroceder(int segundos) {
         tempoAtual = Math.max(tempoAtual - segundos, 0);
-        // Garante que não fique negativo 
+        // Garante que não fique negativo
     }
-
-
-
-
 
 }
