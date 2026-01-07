@@ -11,35 +11,41 @@ import java.util.Arrays;
 public class TelaBiblioteca extends JPanel {
 
     private DefaultListModel<Midia> model;
+    // DefaultListModel, tipo próprio do Swing, facilita manipulação da JList
     private JList<Midia> listaMidias;
 
     private JButton btnCarregarPasta;
-    private JLabel lblStatus;
+    private JLabel labelStatus;
 
     public TelaBiblioteca() {
-        setLayout(new BorderLayout());
-
+        BorderLayout bl1 = new BorderLayout();
+        this.setLayout(bl1);
+        //Inicializão dos "atributos" mais uma vez acontece no construtor, pelo mesmo motivo
         model = new DefaultListModel<>();
-        listaMidias = new JList<>(model);
-        listaMidias.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        listaMidias = new JList<>(model); 
+        listaMidias.setSelectionMode(ListSelectionModel.SINGLE_SELECTION); 
+        // evita seleção múltipla de mídia  
 
         btnCarregarPasta = new JButton("Carregar pasta de músicas");
         btnCarregarPasta.addActionListener(e -> escolherPasta());
 
-        lblStatus = new JLabel("Nenhuma pasta carregada");
+        labelStatus = new JLabel("Nenhuma pasta carregada");
+        //Bom para feedback inicial ao usuário
+        
+        BorderLayout bl2 = new BorderLayout();
+        JPanel topo = new JPanel(bl2);
+        topo.add(btnCarregarPasta, bl2.WEST);
+        topo.add(labelStatus, bl2.CENTER);
 
-        JPanel topo = new JPanel(new BorderLayout());
-        topo.add(btnCarregarPasta, BorderLayout.WEST);
-        topo.add(lblStatus, BorderLayout.CENTER);
-
-        add(topo, BorderLayout.NORTH);
-        add(new JScrollPane(listaMidias), BorderLayout.CENTER);
+        this.add(topo, bl1.NORTH);
+        this.add(new JScrollPane(listaMidias),bl1.CENTER);
     }
 
     // 🔹 Seleção de diretório
     private void escolherPasta() {
         JFileChooser chooser = new JFileChooser();
         chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+        // Apenas pastas podem ser selecionada. Fica mais fácil para o usuário
 
         int resultado = chooser.showOpenDialog(this);
 
@@ -77,7 +83,7 @@ public class TelaBiblioteca extends JPanel {
             // e pode ser calculada depois 
         }
 
-        lblStatus.setText(arquivos.length + " músicas carregadas");
+        labelStatus.setText(arquivos.length + " músicas carregadas");
     }
 
     // 🔹 Interface usada pela JanelaPrincipal 
@@ -91,7 +97,7 @@ public class TelaBiblioteca extends JPanel {
 
     public void limpar() {
         model.clear();
-        lblStatus.setText("Biblioteca limpa");
+        labelStatus.setText("Biblioteca limpa");
     }
 }
 

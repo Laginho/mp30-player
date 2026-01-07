@@ -7,17 +7,20 @@ import java.awt.*;
 
 public class JanelaPrincipal extends JFrame {
 
-    // private PlayerController controller;
+    private PlayerController controller;
     private TelaBiblioteca telaBiblioteca;
 
     public JanelaPrincipal() {
-        // controller = new PlayerController();
+    //"Atributos" da classe são inicializados no construtor
+    // para facilitar testes e reduzir acoplamento entre classes 
         telaBiblioteca = new TelaBiblioteca();
+        controller = new PlayerController();
 
-        setTitle("MP30 Player");
-        setSize(600, 400);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setLocationRelativeTo(null);
+
+        this.setTitle("MP30 Player");
+        this.setSize(600, 400);
+        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.setLocationRelativeTo(null);
 
         setLayout(new BorderLayout());
 
