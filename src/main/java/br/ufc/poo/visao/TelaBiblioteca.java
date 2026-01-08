@@ -1,5 +1,6 @@
 package br.ufc.poo.visao;
 
+import br.ufc.poo.controle.LeitorMetadados;
 import br.ufc.poo.modelo.Midia;
 import br.ufc.poo.modelo.Musica;
 
@@ -10,35 +11,58 @@ import java.util.Arrays;
 
 public class TelaBiblioteca extends JPanel {
 
+
     private DefaultListModel<Midia> model;
     // DefaultListModel, tipo próprio do Swing, facilita manipulação da JList
     private JList<Midia> listaMidias;
-
     private JButton btnCarregarPasta;
     private JLabel labelStatus;
+    private JSlider sliderTempo;
+    private JButton btnProxima;
+    private JButton btnAnterior;
 
     public TelaBiblioteca() {
         BorderLayout bl1 = new BorderLayout();
         this.setLayout(bl1);
-        //Inicializão dos "atributos" mais uma vez acontece no construtor, pelo mesmo motivo
-        model = new DefaultListModel<>();
-        listaMidias = new JList<>(model); 
-        listaMidias.setSelectionMode(ListSelectionModel.SINGLE_SELECTION); 
-        // evita seleção múltipla de mídia  
 
+      
+        model = new DefaultListModel<>();
+        listaMidias = new JList<>(model);
+        listaMidias.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+
+     
         btnCarregarPasta = new JButton("Carregar pasta de músicas");
         btnCarregarPasta.addActionListener(e -> escolherPasta());
 
-        labelStatus = new JLabel("Nenhuma pasta carregada");
-        //Bom para feedback inicial ao usuário
         
-        BorderLayout bl2 = new BorderLayout();
-        JPanel topo = new JPanel(bl2);
-        topo.add(btnCarregarPasta, bl2.WEST);
-        topo.add(labelStatus, bl2.CENTER);
+        labelStatus = new JLabel("Nenhuma pasta carregada");
 
-        this.add(topo, bl1.NORTH);
-        this.add(new JScrollPane(listaMidias),bl1.CENTER);
+        // Painel topo com botão e status
+        JPanel topo = new JPanel(new BorderLayout());
+        topo.add(btnCarregarPasta, BorderLayout.WEST);
+        topo.add(labelStatus, BorderLayout.CENTER);
+
+        // Botões Próxima / Anterior
+        btnProxima = ComponentesCustomizados.criarBotao(">>");
+        btnAnterior = ComponentesCustomizados.criarBotao("<<");
+        JPanel painelControles = new JPanel();
+        painelControles.add(btnAnterior);
+        painelControles.add(btnProxima);
+
+        
+        JPanel painelNorte = new JPanel(new BorderLayout());
+        painelNorte.add(topo, BorderLayout.NORTH);
+        painelNorte.add(painelControles, BorderLayout.SOUTH);
+
+        this.add(painelNorte, BorderLayout.NORTH);
+
+        // Slider de tempo
+        sliderTempo = ComponentesCustomizados.criarSliderTempo();
+        this.add(sliderTempo, BorderLayout.SOUTH);
+
+        // Lista de músicas no centro
+        this.add(new JScrollPane(listaMidias), BorderLayout.CENTER);
+       
     }
 
     // 🔹 Seleção de diretório
@@ -62,7 +86,7 @@ public class TelaBiblioteca extends JPanel {
         File[] arquivos = pasta.listFiles((dir, nome) ->
                 nome.toLowerCase().endsWith(".mp3")
         );
-
+        // mudar para um exception depois
         if (arquivos == null || arquivos.length == 0) {
             labelStatus.setText("Nenhum MP3 encontrado");
             JOptionPane.showMessageDialog(
@@ -76,16 +100,18 @@ public class TelaBiblioteca extends JPanel {
 
         Arrays.sort(arquivos);
 
-        for (File f : arquivos) {
-            Musica musica = new Musica( f.getName(),0,f.getAbsolutePath() );
-            model.addElement(musica);
-            //duração é inicializada no construtor como '0' por enquanto
-            // e pode ser calculada depois 
-        }
+        int musicasCarregadas = 0;
 
-        labelStatus.setText(arquivos.length + " músicas carregadas");
+    for (File f : arquivos) {
+        Musica musica = LeitorMetadados.lerMusica(f.getAbsolutePath()); 
+        if (musica != null) {
+            model.addElement(musica);
+            musicasCarregadas++;
+        }
     }
 
+    labelStatus.setText(musicasCarregadas + " músicas carregadas");
+}
     // 🔹 Interface usada pela JanelaPrincipal 
     public Midia getMidiaSelecionada() {
         return listaMidias.getSelectedValue();
@@ -99,6 +125,10 @@ public class TelaBiblioteca extends JPanel {
         model.clear();
         labelStatus.setText("Biblioteca limpa");
     }
+    
+    
+    
+    
 }
 
 
