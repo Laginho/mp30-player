@@ -64,7 +64,7 @@ public class TelaBiblioteca extends JPanel {
         );
 
         if (arquivos == null || arquivos.length == 0) {
-            lblStatus.setText("Nenhum MP3 encontrado");
+            labelStatus.setText("Nenhum MP3 encontrado");
             JOptionPane.showMessageDialog(
                     this,
                     "Nenhum arquivo MP3 encontrado.",

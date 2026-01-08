@@ -3,6 +3,9 @@ package br.ufc.poo.visao;
 // import br.ufc.poo.controle.PlayerController;
 
 import javax.swing.*;
+
+import br.ufc.poo.controle.PlayerController;
+
 import java.awt.*;
 
 public class JanelaPrincipal extends JFrame {
@@ -33,9 +36,15 @@ public class JanelaPrincipal extends JFrame {
         painelControles.add(btnPause);
 
         // 🔹 Adiciona tudo na janela
+        
         add(telaBiblioteca, BorderLayout.CENTER);
         add(painelControles, BorderLayout.SOUTH);
 
         setVisible(true);
     }
+    public static void main(String[] args) {
+        new JanelaPrincipal();
+    }
+   
+
 }

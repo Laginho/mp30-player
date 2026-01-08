@@ -94,5 +94,6 @@ public abstract class Midia implements Reproduzivel {
         tempoAtual = Math.max(tempoAtual - segundos, 0);
         // Garante que não fique negativo
     }
+    public abstract String toString();
 
 }

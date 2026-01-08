@@ -97,4 +97,7 @@ public class Musica extends Midia {
     public void setAlbum(String album) {
         this.album = album;
     }
+    public String toString() {
+    return titulo + " - " + artista;
+       }
 }
