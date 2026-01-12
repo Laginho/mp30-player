@@ -72,12 +72,12 @@ public class Musica extends Midia {
 
     @Override
     public void pausar() {
-        super.pausar();
-        if (player != null) {
-            player.close();
-            threadMusica = null;
-            System.out.println("Música pausada: " + titulo);
-        }
+         super.pausar();
+    if (player != null) {
+        player.close();
+        reproduzindo = false;
+        threadMusica = null;
+        System.out.println("Música pausada: " + titulo);
     }
 
     // 2.Getters e Setters

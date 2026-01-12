@@ -5,6 +5,7 @@ package br.ufc.poo.visao;
 import javax.swing.*;
 
 import br.ufc.poo.controle.PlayerController;
+import br.ufc.poo.modelo.Midia;
 
 import java.awt.*;
 
@@ -34,6 +35,13 @@ public class JanelaPrincipal extends JFrame {
 
         painelControles.add(btnPlay);
         painelControles.add(btnPause);
+        // 🔹 Ações dos botões
+        btnPlay.addActionListener(e -> {
+    Midia selecionada = telaBiblioteca.getMidiaSelecionada();
+    if (selecionada != null) {
+        controller.tocar(selecionada);
+    }
+});
 
         // 🔹 Adiciona tudo na janela
         
@@ -41,6 +49,7 @@ public class JanelaPrincipal extends JFrame {
         add(painelControles, BorderLayout.SOUTH);
 
         setVisible(true);
+
     }
     public static void main(String[] args) {
         new JanelaPrincipal();
