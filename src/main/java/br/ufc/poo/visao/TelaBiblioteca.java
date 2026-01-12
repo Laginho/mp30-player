@@ -1,9 +1,8 @@
 package br.ufc.poo.visao;
-
+import br.ufc.poo.controle.PlayerController;
 import br.ufc.poo.controle.LeitorMetadados;
 import br.ufc.poo.modelo.Midia;
 import br.ufc.poo.modelo.Musica;
-
 import javax.swing.*;
 import java.awt.*;
 import java.io.File;
@@ -15,6 +14,7 @@ public class TelaBiblioteca extends JPanel {
     private DefaultListModel<Midia> model;
     // DefaultListModel, tipo próprio do Swing, facilita manipulação da JList
     private JList<Midia> listaMidias;
+    private PlayerController controller;
     private JButton btnCarregarPasta;
     private JLabel labelStatus;
     private JSlider sliderTempo;
@@ -22,6 +22,7 @@ public class TelaBiblioteca extends JPanel {
     private JButton btnAnterior;
 
     public TelaBiblioteca() {
+         this.controller = new PlayerController();
         BorderLayout bl1 = new BorderLayout();
         this.setLayout(bl1);
 
@@ -45,9 +46,15 @@ public class TelaBiblioteca extends JPanel {
         // Botões Próxima / Anterior
         btnProxima = ComponentesCustomizados.criarBotao(">>");
         btnAnterior = ComponentesCustomizados.criarBotao("<<");
+        btnProxima.addActionListener(e -> controller.proxima());
+        //Ação dos botões 
+        btnAnterior.addActionListener(e -> controller.anterior());
+          
+        
         JPanel painelControles = new JPanel();
         painelControles.add(btnAnterior);
         painelControles.add(btnProxima);
+        
 
         
         JPanel painelNorte = new JPanel(new BorderLayout());
@@ -106,8 +113,10 @@ public class TelaBiblioteca extends JPanel {
         Musica musica = LeitorMetadados.lerMusica(f.getAbsolutePath()); 
         if (musica != null) {
             model.addElement(musica);
+            controller.adicionarNaPlaylist(musica);
             musicasCarregadas++;
         }
+
     }
 
     labelStatus.setText(musicasCarregadas + " músicas carregadas");

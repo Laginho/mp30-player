@@ -61,6 +61,22 @@ public class PlayerController {
             }
         }
     }
+    public void anterior() {
+    if (playlistPrincipal.isEmpty() || midiaAtual == null) {
+        return;
+    }
+
+    int indexAtual = playlistPrincipal.indexOf(midiaAtual);
+
+    if (indexAtual > 0) {
+        Midia anterior = playlistPrincipal.get(indexAtual - 1);
+        tocar(anterior);
+    } else {
+        System.out.println("Início da playlist.");
+        midiaAtual.pausar();
+    }
+}
+
 
     public void pausar() {
         if (midiaAtual != null) {
