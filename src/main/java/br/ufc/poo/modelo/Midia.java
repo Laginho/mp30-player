@@ -33,6 +33,10 @@ public abstract class Midia implements Reproduzivel {
         return tempoAtual;
     }
 
+    public void setTempoAtual(int tempoAtual) {
+        this.tempoAtual = tempoAtual;
+    }
+
     public void setTitulo(String titulo) {
         this.titulo = titulo;
     }
@@ -94,6 +98,7 @@ public abstract class Midia implements Reproduzivel {
         tempoAtual = Math.max(tempoAtual - segundos, 0);
         // Garante que não fique negativo
     }
+
     public abstract String toString();
 
 }

@@ -1,4 +1,5 @@
 package br.ufc.poo.visao;
+
 import br.ufc.poo.controle.PlayerController;
 import br.ufc.poo.controle.LeitorMetadados;
 import br.ufc.poo.modelo.Midia;
@@ -8,9 +9,7 @@ import java.awt.*;
 import java.io.File;
 import java.util.Arrays;
 
-
 public class TelaBiblioteca extends JPanel {
-
 
     private DefaultListModel<Midia> model;
     // DefaultListModel, tipo próprio do Swing, facilita manipulação da JList
@@ -21,26 +20,21 @@ public class TelaBiblioteca extends JPanel {
     private JSlider sliderTempo;
     private JButton btnProxima;
     private JButton btnAnterior;
-    private Timer timer; 
-    private int segundosAtuais;
+    private Timer timer;
     private JLabel labelTempo;
-
 
     public TelaBiblioteca(PlayerController controller) {
         this.controller = controller;
         BorderLayout bl1 = new BorderLayout();
         this.setLayout(bl1);
 
-      
         model = new DefaultListModel<>();
         listaMidias = new JList<>(model);
         listaMidias.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
-     
         btnCarregarPasta = new JButton("Carregar pasta de músicas");
         btnCarregarPasta.addActionListener(e -> escolherPasta());
 
-        
         labelStatus = new JLabel("Nenhuma pasta carregada");
 
         // Painel topo com botão e status
@@ -51,25 +45,22 @@ public class TelaBiblioteca extends JPanel {
         // Botões Próxima / Anterior
         btnProxima = ComponentesCustomizados.criarBotao(">>");
         btnAnterior = ComponentesCustomizados.criarBotao("<<");
-        
-      btnProxima.addActionListener(e -> {
-    controller.proxima();
-    Midia atual = controller.getMidiaAtual();
-    tocarMidia(atual);
-});
-btnAnterior.addActionListener(e -> {
-    controller.anterior();
-    Midia atual = controller.getMidiaAtual();
-    tocarMidia(atual);
-});
 
-          
+        btnProxima.addActionListener(e -> {
+            controller.proxima();
+            Midia atual = controller.getMidiaAtual();
+            tocarMidia(atual);
+        });
+        btnAnterior.addActionListener(e -> {
+            controller.anterior();
+            Midia atual = controller.getMidiaAtual();
+            tocarMidia(atual);
+        });
+
         JPanel painelControles = new JPanel();
         painelControles.add(btnAnterior);
         painelControles.add(btnProxima);
-        
 
-        
         JPanel painelNorte = new JPanel(new BorderLayout());
         painelNorte.add(topo, BorderLayout.NORTH);
         painelNorte.add(painelControles, BorderLayout.SOUTH);
@@ -79,17 +70,16 @@ btnAnterior.addActionListener(e -> {
         // Slider de tempo e label para mostrar tempo decorrido
         sliderTempo = ComponentesCustomizados.criarSliderTempo();
         labelTempo = new JLabel("00:00 / 00:00");
-     labelTempo.setHorizontalAlignment(SwingConstants.CENTER);
- JPanel painelTempo = new JPanel(new BorderLayout());
-    painelTempo.add(sliderTempo, BorderLayout.CENTER);
-    painelTempo.add(labelTempo, BorderLayout.SOUTH);
+        labelTempo.setHorizontalAlignment(SwingConstants.CENTER);
+        JPanel painelTempo = new JPanel(new BorderLayout());
+        painelTempo.add(sliderTempo, BorderLayout.CENTER);
+        painelTempo.add(labelTempo, BorderLayout.SOUTH);
 
-this.add(painelTempo, BorderLayout.SOUTH);
-        
+        this.add(painelTempo, BorderLayout.SOUTH);
 
-// Lista de músicas no centro
+        // Lista de músicas no centro
         this.add(new JScrollPane(listaMidias), BorderLayout.CENTER);
-       
+
     }
 
     // 🔹 Seleção de diretório
@@ -110,9 +100,7 @@ this.add(painelTempo, BorderLayout.SOUTH);
     private void carregarMidiasDaPasta(File pasta) {
         model.clear();
 
-        File[] arquivos = pasta.listFiles((dir, nome) ->
-                nome.toLowerCase().endsWith(".mp3")
-        );
+        File[] arquivos = pasta.listFiles((dir, nome) -> nome.toLowerCase().endsWith(".mp3"));
         // mudar para um exception depois
         if (arquivos == null || arquivos.length == 0) {
             labelStatus.setText("Nenhum MP3 encontrado");
@@ -120,8 +108,7 @@ this.add(painelTempo, BorderLayout.SOUTH);
                     this,
                     "Nenhum arquivo MP3 encontrado.",
                     "Aviso",
-                    JOptionPane.WARNING_MESSAGE
-            );
+                    JOptionPane.WARNING_MESSAGE);
             return;
         }
 
@@ -129,19 +116,20 @@ this.add(painelTempo, BorderLayout.SOUTH);
 
         int musicasCarregadas = 0;
 
-    for (File f : arquivos) {
-        Musica musica = LeitorMetadados.lerMusica(f.getAbsolutePath()); 
-        if (musica != null) {
-            model.addElement(musica);
-            this.controller.adicionarNaPlaylist(musica);
-            musicasCarregadas++;
+        for (File f : arquivos) {
+            Musica musica = LeitorMetadados.lerMusica(f.getAbsolutePath());
+            if (musica != null) {
+                model.addElement(musica);
+                this.controller.adicionarNaPlaylist(musica);
+                musicasCarregadas++;
+            }
+
         }
 
+        labelStatus.setText(musicasCarregadas + " músicas carregadas");
     }
 
-    labelStatus.setText(musicasCarregadas + " músicas carregadas");
-}
-    // 🔹 Interface usada pela JanelaPrincipal 
+    // 🔹 Interface usada pela JanelaPrincipal
     public Midia getMidiaSelecionada() {
         return listaMidias.getSelectedValue();
     }
@@ -154,62 +142,59 @@ this.add(painelTempo, BorderLayout.SOUTH);
         model.clear();
         labelStatus.setText("Biblioteca limpa");
     }
+
     public void iniciarProgresso(Midia midia) {
-    sliderTempo.setMinimum(0);
-    sliderTempo.setMaximum(midia.getDuracao());
-    sliderTempo.setValue(0);
+        sliderTempo.setMinimum(0);
+        sliderTempo.setMaximum(midia.getDuracao());
+        sliderTempo.setValue(0);
 
-    segundosAtuais = 0;
+        midia.setTempoAtual(0);
 
-    if (timer != null) {
-        timer.stop();
+        if (timer != null) {
+            timer.stop();
+        }
+        labelTempo.setText(
+                formatarTempo(0) + " / " +
+                        formatarTempo(midia.getDuracao()));
+        timer = new Timer(1000, e -> {
+            midia.setTempoAtual(midia.getTempoAtual() + 1);
+            sliderTempo.setValue(midia.getTempoAtual());
+
+            labelTempo.setText(
+                    formatarTempo(midia.getTempoAtual()) + " / " +
+                            formatarTempo(midia.getDuracao()));
+
+            if (midia.getTempoAtual() >= midia.getDuracao()) {
+                timer.stop();
+            }
+        });
+
+        timer.start();
     }
-     labelTempo.setText(
-    formatarTempo(0) + " / " +
-    formatarTempo(midia.getDuracao())
-);
-    timer = new Timer(1000, e -> {
-    segundosAtuais++;
-    sliderTempo.setValue(segundosAtuais);
 
-    labelTempo.setText(
-        formatarTempo(segundosAtuais) + " / " +
-        formatarTempo(midia.getDuracao())
-    );
-
-    if (segundosAtuais >= midia.getDuracao()) {
-        timer.stop();
-    }
-});
-
-
-    timer.start();
-}
     // Retorna a duração usual formatada mm:ss
     private String formatarTempo(int segundos) {
-    int min = segundos / 60;
-    int sec = segundos % 60;
-    return String.format("%02d:%02d", min, sec);
+        int min = segundos / 60;
+        int sec = segundos % 60;
+        return String.format("%02d:%02d", min, sec);
 
-}
-public void tocarMidia(Midia midia) {
-    // Esse método garante que o timer zere após avançar/voltar a música
-    if (midia == null) return;
-
-    // Para timer anterior
-    if (timer != null && timer.isRunning()) {
-        timer.stop();
     }
 
-    segundosAtuais = 0;
+    public void tocarMidia(Midia midia) {
+        // Esse método garante que o timer zere após avançar/voltar a música
+        if (midia == null)
+            return;
 
-    // Atualiza seleção visual da JList
-    listaMidias.setSelectedValue(midia, true);
+        // Para timer anterior
+        if (timer != null && timer.isRunning()) {
+            timer.stop();
+        }
 
-    // Reinicia progresso
-    iniciarProgresso(midia);
+        // Atualiza seleção visual da JList
+        listaMidias.setSelectedValue(midia, true);
+
+        // Reinicia progresso
+        iniciarProgresso(midia);
+    }
+
 }
-
-} 
-
-

@@ -77,8 +77,14 @@ public class PlayerController {
         int indexAtual = playlistPrincipal.indexOf(midiaAtual);
 
         if (indexAtual > 0) {
-            Midia anterior = playlistPrincipal.get(indexAtual - 1);
-            tocar(anterior);
+            if (midiaAtual.getTempoAtual() > 3) {
+                tocar(midiaAtual);
+                return;
+            } else {
+                Midia anterior = playlistPrincipal.get(indexAtual - 1);
+                tocar(anterior);
+            }
+
         } else {
             System.out.println("Início da playlist.");
             midiaAtual.pausar();
