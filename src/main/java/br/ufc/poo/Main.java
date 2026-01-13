@@ -4,6 +4,7 @@ import br.ufc.poo.controle.LeitorMetadados;
 import br.ufc.poo.controle.PlayerController;
 import br.ufc.poo.controle.estrategias.ReproducaoAleatoria;
 import br.ufc.poo.modelo.Musica;
+import br.ufc.poo.visao.JanelaPrincipal;
 
 // Se a IDE reclamar do ambiente Java, faça de forma manual:
 // 1. Abra o terminal na pasta do projeto
@@ -12,6 +13,20 @@ import br.ufc.poo.modelo.Musica;
 
 public class Main {
     public static void main(String[] args) {
+
+        final boolean DEBUG = false;
+
+        if (!DEBUG) {
+            new JanelaPrincipal();
+            return;
+        }
+
+        else {
+            executarTestesCLI();
+        }
+    }
+
+    public static void executarTestesCLI() {
         System.out.println("=========================================");
         System.out.println("   MP30 PLAYER - TESTE DE BACKEND (CLI)   ");
         System.out.println("=========================================\n");
