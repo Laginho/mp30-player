@@ -7,7 +7,7 @@ public class ReproducaoRepetir implements EstrategiaReproducao {
 
     @Override
     public Midia obterProxima(List<Midia> fila, Midia atual) {
-        return null;
+        return atual;
     }
 
 }
