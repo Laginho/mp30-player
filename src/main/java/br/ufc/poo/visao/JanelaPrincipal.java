@@ -1,6 +1,5 @@
 package br.ufc.poo.visao;
 
-// import br.ufc.poo.controle.PlayerController;
 
 import javax.swing.*;
 
@@ -17,8 +16,8 @@ public class JanelaPrincipal extends JFrame {
     public JanelaPrincipal() {
     //"Atributos" da classe são inicializados no construtor
     // para facilitar testes e reduzir acoplamento entre classes 
-        telaBiblioteca = new TelaBiblioteca();
         controller = new PlayerController();
+        telaBiblioteca = new TelaBiblioteca();
 
 
         this.setTitle("MP30 Player");
@@ -40,8 +39,13 @@ public class JanelaPrincipal extends JFrame {
     Midia selecionada = telaBiblioteca.getMidiaSelecionada();
     if (selecionada != null) {
         controller.tocar(selecionada);
+        telaBiblioteca.tocarMidia(selecionada);
+
+    
+
     }
 });
+
 
         // 🔹 Adiciona tudo na janela
         
@@ -56,4 +60,7 @@ public class JanelaPrincipal extends JFrame {
     }
    
 
-}
+} 
+   
+
+
