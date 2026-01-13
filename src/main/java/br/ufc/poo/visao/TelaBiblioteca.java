@@ -8,6 +8,7 @@ import java.awt.*;
 import java.io.File;
 import java.util.Arrays;
 
+
 public class TelaBiblioteca extends JPanel {
 
 
@@ -20,6 +21,10 @@ public class TelaBiblioteca extends JPanel {
     private JSlider sliderTempo;
     private JButton btnProxima;
     private JButton btnAnterior;
+    private Timer timer; 
+    private int segundosAtuais;
+    private JLabel labelTempo;
+
 
     public TelaBiblioteca() {
          this.controller = new PlayerController();
@@ -46,9 +51,23 @@ public class TelaBiblioteca extends JPanel {
         // Botões Próxima / Anterior
         btnProxima = ComponentesCustomizados.criarBotao(">>");
         btnAnterior = ComponentesCustomizados.criarBotao("<<");
-        btnProxima.addActionListener(e -> controller.proxima());
-        //Ação dos botões 
-        btnAnterior.addActionListener(e -> controller.anterior());
+        btnProxima.addActionListener(e -> {
+      controller.proxima();
+
+     Midia atual = controller.getMidiaAtual();
+     if (atual != null) {
+        listaMidias.setSelectedValue(atual, true);
+    }
+    });
+btnAnterior.addActionListener(e -> {
+    controller.anterior();
+
+    Midia atual = controller.getMidiaAtual();
+    if (atual != null) {
+        listaMidias.setSelectedValue(atual, true);
+    }
+});
+
           
         
         JPanel painelControles = new JPanel();
@@ -63,9 +82,18 @@ public class TelaBiblioteca extends JPanel {
 
         this.add(painelNorte, BorderLayout.NORTH);
 
-        // Slider de tempo
+        // Slider de tempo e label para mostrar tempo decorrido
         sliderTempo = ComponentesCustomizados.criarSliderTempo();
         this.add(sliderTempo, BorderLayout.SOUTH);
+        labelTempo = new JLabel("00:00 / 00:00");
+        labelTempo.setHorizontalAlignment(SwingConstants.CENTER);
+        JPanel painelTempo = new JPanel(new BorderLayout());
+       painelTempo.add(sliderTempo, BorderLayout.CENTER);
+       painelTempo.add(labelTempo, BorderLayout.SOUTH);
+        this.add(painelTempo, BorderLayout.SOUTH);
+        
+
+
 
         // Lista de músicas no centro
         this.add(new JScrollPane(listaMidias), BorderLayout.CENTER);
@@ -134,10 +162,44 @@ public class TelaBiblioteca extends JPanel {
         model.clear();
         labelStatus.setText("Biblioteca limpa");
     }
-    
-    
-    
-    
+    public void iniciarProgresso(Midia midia) {
+    sliderTempo.setMinimum(0);
+    sliderTempo.setMaximum(midia.getDuracao());
+    sliderTempo.setValue(0);
+
+    segundosAtuais = 0;
+
+    if (timer != null) {
+        timer.stop();
+    }
+     labelTempo.setText(
+    formatarTempo(0) + " / " +
+    formatarTempo(midia.getDuracao())
+);
+    timer = new Timer(1000, e -> {
+    segundosAtuais++;
+    sliderTempo.setValue(segundosAtuais);
+
+    labelTempo.setText(
+        formatarTempo(segundosAtuais) + " / " +
+        formatarTempo(midia.getDuracao())
+    );
+
+    if (segundosAtuais >= midia.getDuracao()) {
+        timer.stop();
+    }
+});
+
+
+    timer.start();
 }
+
+    private String formatarTempo(int segundos) {
+    int min = segundos / 60;
+    int sec = segundos % 60;
+    return String.format("%02d:%02d", min, sec);
+
+}
+} 
 
 
