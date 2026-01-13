@@ -26,8 +26,8 @@ public class TelaBiblioteca extends JPanel {
     private JLabel labelTempo;
 
 
-    public TelaBiblioteca() {
-        controller = new PlayerController();
+    public TelaBiblioteca(PlayerController controller) {
+        this.controller = controller;
         BorderLayout bl1 = new BorderLayout();
         this.setLayout(bl1);
 
