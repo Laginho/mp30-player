@@ -3,7 +3,7 @@ package br.ufc.poo.controle;
 import br.ufc.poo.controle.estrategias.EstrategiaReproducao;
 import br.ufc.poo.controle.estrategias.ReproducaoSequencial;
 import br.ufc.poo.modelo.Midia;
-import br.ufc.poo.modelo.Audio;
+import br.ufc.poo.modelo.Musica;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,7 +25,7 @@ public class PlayerController {
 
     // Só reproduz automaticamente as músicas, não os áudios
     public void adicionarNaPlaylist(Midia midia) {
-        if (midia instanceof Audio) {
+        if (!(midia instanceof Musica)) {
             return;
         }
 
