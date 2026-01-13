@@ -3,6 +3,7 @@ package br.ufc.poo.controle;
 import br.ufc.poo.controle.estrategias.EstrategiaReproducao;
 import br.ufc.poo.controle.estrategias.ReproducaoSequencial;
 import br.ufc.poo.modelo.Midia;
+import br.ufc.poo.modelo.Audio;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,10 +23,16 @@ public class PlayerController {
 
     // --- Gerenciamento das Listas ---
 
+    // Só reproduz automaticamente as músicas, não os áudios
     public void adicionarNaPlaylist(Midia midia) {
+        if (midia instanceof Audio) {
+            return;
+        }
+
         playlistPrincipal.add(midia);
     }
 
+    // Essa é manual, então não precisa filtrar
     public void adicionarNaFila(Midia midia) {
         filaReproducao.add(midia);
     }
@@ -61,22 +68,22 @@ public class PlayerController {
             }
         }
     }
+
     public void anterior() {
-    if (playlistPrincipal.isEmpty() || midiaAtual == null) {
-        return;
+        if (playlistPrincipal.isEmpty() || midiaAtual == null) {
+            return;
+        }
+
+        int indexAtual = playlistPrincipal.indexOf(midiaAtual);
+
+        if (indexAtual > 0) {
+            Midia anterior = playlistPrincipal.get(indexAtual - 1);
+            tocar(anterior);
+        } else {
+            System.out.println("Início da playlist.");
+            midiaAtual.pausar();
+        }
     }
-
-    int indexAtual = playlistPrincipal.indexOf(midiaAtual);
-
-    if (indexAtual > 0) {
-        Midia anterior = playlistPrincipal.get(indexAtual - 1);
-        tocar(anterior);
-    } else {
-        System.out.println("Início da playlist.");
-        midiaAtual.pausar();
-    }
-}
-
 
     public void pausar() {
         if (midiaAtual != null) {
