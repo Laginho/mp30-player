@@ -72,12 +72,13 @@ public class Musica extends Midia {
 
     @Override
     public void pausar() {
-         super.pausar();
-    if (player != null) {
-        player.close();
-        reproduzindo = false;
-        threadMusica = null;
-        System.out.println("Música pausada: " + titulo);
+        super.pausar();
+        if (player != null) {
+            player.close();
+            reproduzindo = false;
+            threadMusica = null;
+            System.out.println("Música pausada: " + titulo);
+        }
     }
 
     // 2.Getters e Setters
@@ -97,7 +98,8 @@ public class Musica extends Midia {
     public void setAlbum(String album) {
         this.album = album;
     }
+
     public String toString() {
-    return titulo + " - " + artista;
-       }
+        return titulo + " - " + artista;
+    }
 }

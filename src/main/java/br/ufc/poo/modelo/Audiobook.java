@@ -16,4 +16,8 @@ public class Audiobook extends Midia {
         this.autor = autor;
     }
 
+    public String toString() {
+        return "Audiobook: " + titulo + " by " + autor;
+    }
+
 }

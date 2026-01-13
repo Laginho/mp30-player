@@ -6,4 +6,8 @@ public class Podcast extends Midia {
         super(titulo, caminho, duracao);
     }
 
+    public String toString() {
+        return "Podcast";
+    }
+
 }
