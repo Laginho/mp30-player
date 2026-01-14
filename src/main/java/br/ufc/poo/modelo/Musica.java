@@ -1,6 +1,9 @@
 package br.ufc.poo.modelo;
 
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+
+import javazoom.jl.decoder.JavaLayerException;
 import javazoom.jl.player.Player;
 
 public class Musica extends Midia {
@@ -61,7 +64,9 @@ public class Musica extends Midia {
                 player = new Player(fis);
                 player.play();
                 this.reproduzindo = false;
-            } catch (Exception e) {
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            } catch (JavaLayerException e) {
                 e.printStackTrace();
             }
         });
@@ -70,6 +75,17 @@ public class Musica extends Midia {
         System.out.println("Reproduzindo música: " + titulo);
         System.out.println("Artista: " + artista + " | Álbum: " + album);
         System.out.println("Duração: " + getDuracaoUsual());
+    }
+
+    @Override
+    public void parar() {
+        super.parar();
+
+        if (player != null) {
+            player.close();
+        }
+
+        System.out.println("Música parada: " + titulo);
     }
 
     public String getArtista() {

@@ -43,6 +43,7 @@ public class PlayerController {
 
     public void tentar_tocar(Midia midia) throws MidiaJaTocandoException, MidiaNaoEncontradaException {
         if (midiaAtual != null) {
+            System.out.println("[INFO] Parando mídia atual: " + midiaAtual.getTitulo());
             midiaAtual.parar();
         }
 

@@ -89,6 +89,7 @@ public class TelaBiblioteca extends JPanel {
         this.add(new JScrollPane(listaMidias), BorderLayout.CENTER);
 
         // Adiciona mídia à fila de reprodução visualmente
+
         // 1. Criando a interface gráfica em si
         JScrollPane scrollFila = new JScrollPane(listaFila);
         scrollFila.setPreferredSize(new Dimension(150, 0));
@@ -97,7 +98,8 @@ public class TelaBiblioteca extends JPanel {
         painelFila.add(labelFila, BorderLayout.NORTH);
         painelFila.add(scrollFila, BorderLayout.CENTER);
         this.add(painelFila, BorderLayout.EAST);
-        // 2. Adicionando a funcionalidade de adicionar mídias à fila de reprodução
+
+        // 2. Adicionar mídias à fila de reprodução
         listaMidias.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
