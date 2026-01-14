@@ -49,6 +49,14 @@ public class JanelaPrincipal extends JFrame {
                 telaBiblioteca.tocarMidia(atual);
             }
         });
+
+        btnPause.addActionListener(e -> {
+            Midia atual = controller.getMidiaAtual();
+            if (atual != null) {
+                atual.pausar();
+            }
+        });
+
         // Permite que o usuário escolha o modo de reprodução
         String[] modosReproducao = {
                 "Sequencial", "Aleatório", "Repetir"

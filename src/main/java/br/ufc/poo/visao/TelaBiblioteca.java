@@ -29,8 +29,7 @@ public class TelaBiblioteca extends JPanel {
 
     public TelaBiblioteca(PlayerController controller) {
         this.controller = controller;
-        BorderLayout bl1 = new BorderLayout();
-        this.setLayout(bl1);
+        this.setLayout(new BorderLayout());
 
         model = new DefaultListModel<>();
         listaMidias = new JList<>(model);
@@ -121,11 +120,14 @@ public class TelaBiblioteca extends JPanel {
         });
     }
 
-    // 🔹 Seleção de diretório
     private void escolherPasta() {
         JFileChooser chooser = new JFileChooser();
+
+        String path = System.getProperty("user.dir");
+        chooser.setCurrentDirectory(new File(path));
+
+        // Apenas pastas podem ser selecionadas. Fica mais fácil para o usuário
         chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-        // Apenas pastas podem ser selecionada. Fica mais fácil para o usuário
 
         int resultado = chooser.showOpenDialog(this);
 
