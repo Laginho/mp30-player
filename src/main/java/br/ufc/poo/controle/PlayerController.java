@@ -2,6 +2,8 @@ package br.ufc.poo.controle;
 
 import br.ufc.poo.controle.estrategias.EstrategiaReproducao;
 import br.ufc.poo.controle.estrategias.ReproducaoSequencial;
+import br.ufc.poo.excecoes.MidiaJaTocandoException;
+import br.ufc.poo.excecoes.MidiaNaoEncontradaException;
 import br.ufc.poo.modelo.Midia;
 import br.ufc.poo.modelo.Musica;
 
@@ -39,15 +41,36 @@ public class PlayerController {
 
     // --- Controle de Reprodução ---
 
-    public void tocar(Midia midia) {
+    public void tentar_tocar(Midia midia) throws MidiaJaTocandoException, MidiaNaoEncontradaException {
         if (midiaAtual != null) {
             midiaAtual.parar();
         }
 
         midiaAtual = midia;
+
+        if (midiaAtual == null) {
+            throw new MidiaNaoEncontradaException("Mídia não encontrada para reprodução.");
+        }
+
+        if (midiaAtual.isReproduzindo()) {
+            throw new MidiaJaTocandoException("A mídia '" + midia.getTitulo() + "' já está em reprodução.");
+        }
+
         midiaAtual.reproduzir();
 
         System.out.println("[INFO] Tocando agora: " + midiaAtual.getTitulo());
+    }
+
+    public void tocar(Midia midia) {
+        try {
+            tentar_tocar(midia);
+        } catch (MidiaJaTocandoException e) {
+            System.out.println("[ERROR] " + e.getMessage());
+        } catch (MidiaNaoEncontradaException e) {
+            System.out.println("[ERROR] " + e.getMessage());
+        }
+
+        midiaAtual.parar();
     }
 
     public void proxima() {
@@ -61,13 +84,11 @@ public class PlayerController {
             proximaMidia = estrategia.obterProxima(playlistPrincipal, midiaAtual);
         }
 
-        if (proximaMidia != null) {
-            tocar(proximaMidia);
-        } else {
-            System.out.println("Fim da playlist.");
-            if (midiaAtual != null) {
-                midiaAtual.parar();
-            }
+        tocar(proximaMidia);
+
+        System.out.println("Fim da playlist.");
+        if (midiaAtual != null) {
+            midiaAtual.parar();
         }
     }
 
@@ -88,8 +109,9 @@ public class PlayerController {
             }
 
         } else {
-            System.out.println("Início da playlist.");
-            midiaAtual.parar();
+            Midia anterior = playlistPrincipal.get(playlistPrincipal.size() - 1);
+
+            tocar(anterior);
         }
     }
 
@@ -110,7 +132,6 @@ public class PlayerController {
         return midiaAtual;
     }
 
-    // Esse get vai ajudar na criação da tela de fila de reprodução
     public List<Midia> getFilaReproducao() {
         return filaReproducao;
     }
