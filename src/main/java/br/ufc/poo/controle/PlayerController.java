@@ -107,4 +107,8 @@ public class PlayerController {
     public Midia getMidiaAtual() {
         return midiaAtual;
     }
+    // Esse get vai ajudar na criação da tela de fila de reprodução
+    public List<Midia> getFilaReproducao() {
+    return filaReproducao;
+}
 }
