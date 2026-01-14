@@ -1,6 +1,9 @@
 package br.ufc.poo.modelo;
 
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+
+import javazoom.jl.decoder.JavaLayerException;
 import javazoom.jl.player.Player;
 
 public class Audio extends Midia {
@@ -8,38 +11,39 @@ public class Audio extends Midia {
     private Player player;
     private Thread threadAudio;
 
-    private String artista;
-    // 1.Construtores
+    private String autor;
 
     // Construtor simplificado (modo debug)
     public Audio(String titulo, int duracao, String caminho) {
         super(titulo, caminho, duracao);
-        this.artista = "Desconhecido";
+        this.autor = "Desconhecido";
     }
 
     // Construtor (para arquivos MP3)
     // Ex.: new Musica("bohemian_rhapsody.mp3",
     // "/home/user/Musicas/bohemian_rhapsody.mp3");
-    public Audio(String titulo, int duracao, String caminho, String artista) {
+    public Audio(String titulo, int duracao, String caminho, String autor) {
         super(titulo, caminho, duracao);
-        this.artista = (artista != null) ? artista : "Desconhecido";
+        this.autor = (autor != null) ? autor : "Desconhecido";
     }
 
     @Override
     public void reproduzir() {
         if (this.caminho == null) {
-            System.out.println("Música em modo debug: " + titulo);
+            System.out.println("Áudio em modo debug: " + titulo);
             return;
         }
 
         if (reproduzindo) {
-            return; // Já está reproduzindo
+            System.out.println("Áudio já está em reprodução: " + titulo);
+            return;
         }
 
         super.reproduzir();
 
         if (threadAudio != null && threadAudio.isAlive()) {
-            return; // Já está sendo reproduzida em outra thread
+            System.out.println("Áudio já está sendo reproduzido em outra thread: " + titulo);
+            return;
         }
 
         threadAudio = new Thread(() -> {
@@ -48,39 +52,35 @@ public class Audio extends Midia {
                 player = new Player(fis);
                 player.play();
                 this.reproduzindo = false;
-            } catch (Exception e) {
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            } catch (JavaLayerException e) {
                 e.printStackTrace();
             }
         });
 
         threadAudio.start();
         System.out.println("Reproduzindo áudio: " + titulo);
-        System.out.println("Artista: " + artista);
+        System.out.println("Autor: " + autor);
         System.out.println("Duração: " + getDuracaoUsual());
     }
 
     @Override
-    public void pausar() {
-        super.pausar();
-        if (player != null) {
-            player.close();
-            reproduzindo = false;
-            threadAudio = null;
-            System.out.println("Áudio pausado: " + titulo);
-        }
+    public void parar() {
+        super.parar();
+
+        System.out.println("Áudio parado: " + titulo);
     }
 
-    // 2.Getters e Setters
-
-    public String getArtista() {
-        return artista;
+    public String getautor() {
+        return autor;
     }
 
-    public void setArtista(String artista) {
-        this.artista = artista;
+    public void setautor(String autor) {
+        this.autor = autor;
     }
 
     public String toString() {
-        return titulo + " - " + artista;
+        return titulo + " - " + autor;
     }
 }

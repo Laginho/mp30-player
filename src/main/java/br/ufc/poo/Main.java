@@ -104,7 +104,7 @@ public class Main {
         System.out.println("   FIM DO TESTE - ENCERRANDO PLAYER      ");
         System.out.println("=========================================");
 
-        player.pausar();
+        player.parar();
         System.exit(0);
     }
 

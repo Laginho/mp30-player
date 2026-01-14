@@ -31,10 +31,10 @@ public class JanelaPrincipal extends JFrame {
         // 🔹 Painel inferior (controles)
         JPanel painelControles = new JPanel(new FlowLayout());
         JButton btnPlay = new JButton("Play");
-        JButton btnPause = new JButton("Pause");
+        JButton btnStop = new JButton("Stop");
 
         painelControles.add(btnPlay);
-        painelControles.add(btnPause);
+        painelControles.add(btnStop);
         // 🔹 Ações dos botões
         btnPlay.addActionListener(e -> {
             Midia selecionada = telaBiblioteca.getMidiaSelecionada();
@@ -50,10 +50,10 @@ public class JanelaPrincipal extends JFrame {
             }
         });
 
-        btnPause.addActionListener(e -> {
+        btnStop.addActionListener(e -> {
             Midia atual = controller.getMidiaAtual();
             if (atual != null) {
-                atual.pausar();
+                atual.parar();
             }
         });
 

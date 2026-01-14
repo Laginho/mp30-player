@@ -213,12 +213,17 @@ public class TelaBiblioteca extends JPanel {
         timer.start();
     }
 
+    public void resumirProgresso() {
+        int tempoAtual = controller.getMidiaAtual().getTempoAtual();
+        sliderTempo.setValue(tempoAtual);
+
+    }
+
     // Retorna a duração usual formatada mm:ss
     private String formatarTempo(int segundos) {
         int min = segundos / 60;
         int sec = segundos % 60;
         return String.format("%02d:%02d", min, sec);
-
     }
 
     public void tocarMidia(Midia midia) {

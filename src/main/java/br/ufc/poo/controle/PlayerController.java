@@ -41,11 +41,13 @@ public class PlayerController {
 
     public void tocar(Midia midia) {
         if (midiaAtual != null) {
-            midiaAtual.pausar();
+            midiaAtual.parar();
         }
 
         midiaAtual = midia;
         midiaAtual.reproduzir();
+
+        System.out.println("[INFO] Tocando agora: " + midiaAtual.getTitulo());
     }
 
     public void proxima() {
@@ -54,7 +56,7 @@ public class PlayerController {
         // A fila de prioridade tem preferência
         if (!filaReproducao.isEmpty()) {
             proximaMidia = filaReproducao.remove(0);
-            System.out.println("[INFO] Tocando da Fila de Prioridade...");
+            System.out.println("[INFO] Tocando da Fila de Prioridade: " + proximaMidia.getTitulo());
         } else {
             proximaMidia = estrategia.obterProxima(playlistPrincipal, midiaAtual);
         }
@@ -64,7 +66,7 @@ public class PlayerController {
         } else {
             System.out.println("Fim da playlist.");
             if (midiaAtual != null) {
-                midiaAtual.pausar();
+                midiaAtual.parar();
             }
         }
     }
@@ -87,13 +89,13 @@ public class PlayerController {
 
         } else {
             System.out.println("Início da playlist.");
-            midiaAtual.pausar();
+            midiaAtual.parar();
         }
     }
 
-    public void pausar() {
+    public void parar() {
         if (midiaAtual != null) {
-            midiaAtual.pausar();
+            midiaAtual.parar();
         }
     }
 

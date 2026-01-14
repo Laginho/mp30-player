@@ -44,13 +44,15 @@ public class Musica extends Midia {
         }
 
         if (reproduzindo) {
-            return; // Já está reproduzindo
+            System.out.println("Música já está em reprodução: " + titulo);
+            return;
         }
 
         super.reproduzir();
 
         if (threadMusica != null && threadMusica.isAlive()) {
-            return; // Já está sendo reproduzida em outra thread
+            System.out.println("Música já está sendo reproduzida em outra thread: " + titulo);
+            return;
         }
 
         threadMusica = new Thread(() -> {
@@ -69,19 +71,6 @@ public class Musica extends Midia {
         System.out.println("Artista: " + artista + " | Álbum: " + album);
         System.out.println("Duração: " + getDuracaoUsual());
     }
-
-    @Override
-    public void pausar() {
-        super.pausar();
-        if (player != null) {
-            player.close();
-            reproduzindo = false;
-            threadMusica = null;
-            System.out.println("Música pausada: " + titulo);
-        }
-    }
-
-    // 2.Getters e Setters
 
     public String getArtista() {
         return artista;
