@@ -48,12 +48,12 @@ public class Musica extends Midia {
             return;
         }
 
-        super.reproduzir();
-
         if (threadMusica != null && threadMusica.isAlive()) {
             System.out.println("Música já está sendo reproduzida em outra thread: " + titulo);
             return;
         }
+
+        super.reproduzir();
 
         threadMusica = new Thread(() -> {
             try {

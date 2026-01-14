@@ -70,7 +70,9 @@ public class PlayerController {
             System.out.println("[ERROR] " + e.getMessage());
         }
 
-        midiaAtual.parar();
+        if (midiaAtual != null) {
+            midiaAtual.parar();
+        }
     }
 
     public void proxima() {
@@ -84,12 +86,11 @@ public class PlayerController {
             proximaMidia = estrategia.obterProxima(playlistPrincipal, midiaAtual);
         }
 
-        tocar(proximaMidia);
-
-        System.out.println("Fim da playlist.");
         if (midiaAtual != null) {
             midiaAtual.parar();
         }
+
+        tocar(proximaMidia);
     }
 
     public void anterior() {

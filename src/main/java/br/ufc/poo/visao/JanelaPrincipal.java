@@ -16,8 +16,6 @@ public class JanelaPrincipal extends JFrame {
     private TelaBiblioteca telaBiblioteca;
 
     public JanelaPrincipal() {
-        // "Atributos" da classe são inicializados no construtor
-        // para facilitar testes e reduzir acoplamento entre classes
         controller = new PlayerController();
         telaBiblioteca = new TelaBiblioteca(controller);
 
@@ -28,14 +26,15 @@ public class JanelaPrincipal extends JFrame {
 
         setLayout(new BorderLayout());
 
-        // 🔹 Painel inferior (controles)
+        // Painel inferior
         JPanel painelControles = new JPanel(new FlowLayout());
         JButton btnPlay = new JButton("Play");
         JButton btnStop = new JButton("Stop");
 
         painelControles.add(btnPlay);
         painelControles.add(btnStop);
-        // 🔹 Ações dos botões
+
+        // Botão Play
         btnPlay.addActionListener(e -> {
             Midia selecionada = telaBiblioteca.getMidiaSelecionada();
 
@@ -50,6 +49,7 @@ public class JanelaPrincipal extends JFrame {
             }
         });
 
+        // Botão Stop
         btnStop.addActionListener(e -> {
             Midia atual = controller.getMidiaAtual();
             if (atual != null) {
@@ -82,13 +82,10 @@ public class JanelaPrincipal extends JFrame {
             }
         });
 
-        // 🔹 Adiciona tudo na janela
-
         add(telaBiblioteca, BorderLayout.CENTER);
         add(painelControles, BorderLayout.SOUTH);
 
         setVisible(true);
-
     }
 
     public static void main(String[] args) {
