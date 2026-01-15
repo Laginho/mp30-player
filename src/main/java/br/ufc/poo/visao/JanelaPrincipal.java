@@ -8,7 +8,8 @@ import br.ufc.poo.controle.estrategias.ReproducaoRepetir;
 import br.ufc.poo.controle.estrategias.ReproducaoSequencial;
 import br.ufc.poo.modelo.Midia;
 
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.FlowLayout;
 
 public class JanelaPrincipal extends JFrame {
 
@@ -17,7 +18,7 @@ public class JanelaPrincipal extends JFrame {
 
     public JanelaPrincipal() {
         controller = new PlayerController();
-        telaBiblioteca = new TelaBiblioteca(controller); 
+        telaBiblioteca = new TelaBiblioteca(controller);
         controller.setTela(telaBiblioteca);
         this.setTitle("MP30 Player");
         this.setSize(600, 400);
@@ -27,7 +28,7 @@ public class JanelaPrincipal extends JFrame {
         setLayout(new BorderLayout());
 
         // Painel inferior
-        JPanel painelControles = new JPanfel(new FlowLayout());
+        JPanel painelControles = new JPanel(new FlowLayout());
         JButton btnPlay = new JButton("Play");
         JButton btnStop = new JButton("Stop");
 
