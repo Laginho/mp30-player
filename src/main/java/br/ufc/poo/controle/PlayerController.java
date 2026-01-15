@@ -6,6 +6,7 @@ import br.ufc.poo.excecoes.MidiaJaTocandoException;
 import br.ufc.poo.excecoes.MidiaNaoEncontradaException;
 import br.ufc.poo.modelo.Midia;
 import br.ufc.poo.modelo.Musica;
+import br.ufc.poo.visao.TelaBiblioteca;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,12 +17,16 @@ public class PlayerController {
     private List<Midia> filaReproducao;
     private Midia midiaAtual;
     private EstrategiaReproducao estrategia;
+    private TelaBiblioteca tela; // atributo adicionado para resolver a questão da limpeza da fila 
 
     public PlayerController() {
         this.playlistPrincipal = new ArrayList<>();
         this.filaReproducao = new ArrayList<>();
         this.estrategia = new ReproducaoSequencial();
     }
+    public void setTela(TelaBiblioteca tela) {
+        this.tela = tela;
+    } 
 
     // --- Gerenciamento das Listas ---
 
@@ -71,9 +76,6 @@ public class PlayerController {
             System.out.println("[ERROR] " + e.getMessage());
         }
 
-        if (midiaAtual != null) {
-            midiaAtual.parar();
-        }
     }
 
     public void proxima() {
@@ -83,6 +85,9 @@ public class PlayerController {
         if (!filaReproducao.isEmpty()) {
             proximaMidia = filaReproducao.remove(0);
             System.out.println("[INFO] Tocando da Fila de Prioridade: " + proximaMidia.getTitulo());
+            if (tela != null) {
+            tela.limparFilaReproducao(); // Ajusta para sincrnizar a fila
+            }   
         } else {
             proximaMidia = estrategia.obterProxima(playlistPrincipal, midiaAtual);
         }

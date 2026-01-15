@@ -118,8 +118,16 @@ public class TelaBiblioteca extends JPanel {
                     controller.adicionarNaFila(m);
                     modeloFila.addElement(m);
                 }
+
             }
         });
+        
+}
+// 3. Criação de método para" limpar" a fila de reprodução 
+        public void limparFilaReproducao() {
+            if(!modeloFila.isEmpty()) {
+                modeloFila.remove(0);
+            }
     }
 
     private void escolherPasta() {

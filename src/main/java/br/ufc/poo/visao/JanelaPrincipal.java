@@ -17,8 +17,8 @@ public class JanelaPrincipal extends JFrame {
 
     public JanelaPrincipal() {
         controller = new PlayerController();
-        telaBiblioteca = new TelaBiblioteca(controller);
-
+        telaBiblioteca = new TelaBiblioteca(controller); 
+        controller.setTela(telaBiblioteca);
         this.setTitle("MP30 Player");
         this.setSize(600, 400);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -27,7 +27,7 @@ public class JanelaPrincipal extends JFrame {
         setLayout(new BorderLayout());
 
         // Painel inferior
-        JPanel painelControles = new JPanel(new FlowLayout());
+        JPanel painelControles = new JPanfel(new FlowLayout());
         JButton btnPlay = new JButton("Play");
         JButton btnStop = new JButton("Stop");
 
