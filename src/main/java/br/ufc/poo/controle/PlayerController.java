@@ -83,7 +83,8 @@ public class PlayerController {
 
         // A fila de prioridade tem preferência
         if (!filaReproducao.isEmpty()) {
-            proximaMidia = filaReproducao.remove(0);
+            proximaMidia = filaReproducao.get(0);
+            filaReproducao.remove(0);
             System.out.println("[INFO] Tocando da Fila de Prioridade: " + proximaMidia.getTitulo());
             if (tela != null) {
             tela.limparFilaReproducao(); // Ajusta para sincrnizar a fila
@@ -91,13 +92,22 @@ public class PlayerController {
         } else {
             proximaMidia = estrategia.obterProxima(playlistPrincipal, midiaAtual);
         }
-
+        if (proximaMidia == null && !playlistPrincipal.isEmpty()) {
+        System.out.println("[INFO] Fim da playlist. Reiniciando...");
+        proximaMidia = playlistPrincipal.get(0);
+        // if ajustado para o caso de chegar ao fim da playlist
+        // Agora o botão de próxima volta para o inicio certinho 
+    }
+        if (proximaMidia != null) {
+        tocar(proximaMidia);
+    } else {
+        // caso extremo: playlist vazia
         if (midiaAtual != null) {
             midiaAtual.parar();
+            midiaAtual = null;
         }
-
-        tocar(proximaMidia);
     }
+}
 
     public void anterior() {
         if (playlistPrincipal.isEmpty() || midiaAtual == null) {
