@@ -70,5 +70,14 @@ public abstract class Midia implements Reproduzivel {
     }
 
     public abstract String toString();
+    
+    // Como proposto na reunião, a distinção de aúdio e música
+    // vai ser feita com base no tempo de duração 
+    public boolean isMusica() {
+        return this.duracao <= 600; // 10 minutos como base 
+    }
+    public boolean isAudio() {
+        return this.duracao > 600; 
+    }
 
 }
