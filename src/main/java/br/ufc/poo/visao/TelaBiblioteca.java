@@ -6,10 +6,16 @@ import br.ufc.poo.modelo.Midia;
 import br.ufc.poo.modelo.Musica;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.List;
+
+import javax.swing.Timer; 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
 import java.util.Arrays;
+import java.awt.event.ActionListener;
+import java.util.*;
+
 
 public class TelaBiblioteca extends JPanel {
 
@@ -26,8 +32,14 @@ public class TelaBiblioteca extends JPanel {
     private Timer timer;
     private int segundosAtuais;
     private JLabel labelTempo;
+    //Novos atributos para criados para resolver a distinção audio/música
+    private JCheckBox chkSoMusicas;
+    private JCheckBox chkSoAudios; 
+    private ArrayList<Midia> todasAsMidias; 
+
 
     public TelaBiblioteca(PlayerController controller) {
+        todasAsMidias = new ArrayList<>();
         this.controller = controller;
         this.setLayout(new BorderLayout());
 
@@ -121,8 +133,20 @@ public class TelaBiblioteca extends JPanel {
 
             }
         });
-        
-}
+        //Tratamento dos filtros de áudio/música
+        chkSoMusicas = new JCheckBox("Músicas");
+        chkSoAudios = new JCheckBox("Áudios");
+
+        JPanel painelFiltros = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        painelFiltros.add(chkSoMusicas);
+        painelFiltros.add(chkSoAudios);
+
+        this.add(painelFiltros, BorderLayout.SOUTH);
+        ActionListener filtroListener = e -> atualizarListaMidias(); 
+
+chkSoMusicas.addActionListener(filtroListener);
+chkSoAudios.addActionListener(filtroListener);
+    }
 // 3. Criação de método para" limpar" a fila de reprodução 
         public void limparFilaReproducao() {
             if(!modeloFila.isEmpty()) {
@@ -150,6 +174,7 @@ public class TelaBiblioteca extends JPanel {
     // 🔹 Leitura de MP3 reais
     private void carregarMidiasDaPasta(File pasta) {
         model.clear();
+        todasAsMidias.clear();
 
         File[] arquivos = pasta.listFiles((dir, nome) -> nome.toLowerCase().endsWith(".mp3"));
         // mudar para um exception depois
@@ -165,20 +190,35 @@ public class TelaBiblioteca extends JPanel {
 
         Arrays.sort(arquivos);
 
-        int musicasCarregadas = 0;
+        int arquivosCarregados = 0;
 
         for (File f : arquivos) {
-            Musica musica = LeitorMetadados.lerMusica(f.getAbsolutePath());
-            if (musica != null) {
-                model.addElement(musica);
-                this.controller.adicionarNaPlaylist(musica);
-                musicasCarregadas++;
+            Midia m = LeitorMetadados.lerMusica(f.getAbsolutePath());
+            if (m != null) {
+                todasAsMidias.add(m);
+                this.controller.adicionarNaPlaylist(m);
+                arquivosCarregados++;
             }
 
         }
 
-        labelStatus.setText(musicasCarregadas + " músicas carregadas");
+        labelStatus.setText(arquivosCarregados + " arquivos carregados");
+        this.atualizarListaMidias(); 
     }
+    private void atualizarListaMidias() {
+    model.clear();
+
+    for (Midia midia : todasAsMidias) {
+
+        if (chkSoMusicas.isSelected() && midia.isAudio())
+            continue;
+
+        if (chkSoAudios.isSelected() && midia.isMusica())
+            continue;
+
+        model.addElement(midia);
+    }
+}
 
     // 🔹 Interface usada pela JanelaPrincipal
     public Midia getMidiaSelecionada() {
