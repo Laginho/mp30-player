@@ -77,60 +77,113 @@ public class PlayerController {
         }
 
     }
+    // Com a implementação do filtro, um método auxiliar tem que ser criado 
+    // no PlayerController para comunicar a ele o que fazer se um mídia passa no filtro
+    private boolean passaNoFiltro(Midia m) {
+    if (tela == null || m == null) return true;
 
-    public void proxima() {
-        Midia proximaMidia = null;
+    if (tela.isSoMusicas() && m.isAudio())
+        return false;
 
-        // A fila de prioridade tem preferência
-        if (!filaReproducao.isEmpty()) {
-            proximaMidia = filaReproducao.get(0);
-            filaReproducao.remove(0);
-            System.out.println("[INFO] Tocando da Fila de Prioridade: " + proximaMidia.getTitulo());
+    if (tela.isSoAudios() && m.isMusica())
+        return false;
+
+    return true;
+}
+
+   public void proxima() {
+    Midia proximaMidia = null;
+
+    // 1Fila de prioridade
+    while (!filaReproducao.isEmpty()) {
+        Midia candidata = filaReproducao.remove(0);
+        if (passaNoFiltro(candidata)) {
+            proximaMidia = candidata;
             if (tela != null) {
-            tela.limparFilaReproducao(); // Ajusta para sincrnizar a fila
-            }   
-        } else {
-            proximaMidia = estrategia.obterProxima(playlistPrincipal, midiaAtual);
+                tela.limparFilaReproducao();
+            }
+            break;
         }
-        if (proximaMidia == null && !playlistPrincipal.isEmpty()) {
-        System.out.println("[INFO] Fim da playlist. Reiniciando...");
-        proximaMidia = playlistPrincipal.get(0);
-        // if ajustado para o caso de chegar ao fim da playlist
-        // Agora o botão de próxima volta para o inicio certinho 
     }
-        if (proximaMidia != null) {
-        tocar(proximaMidia);
-    } else {
-        // caso extremo: playlist vazia
-        if (midiaAtual != null) {
-            midiaAtual.parar();
-            midiaAtual = null;
+
+    //  Playlist com estratégia
+    if (proximaMidia == null && !playlistPrincipal.isEmpty()) {
+        Midia candidata = midiaAtual;
+        int tentativas = 0;
+
+        do {
+            candidata = estrategia.obterProxima(playlistPrincipal, candidata);
+            tentativas++;
+        } while (candidata != null
+                && !passaNoFiltro(candidata)
+                && tentativas <= playlistPrincipal.size());
+
+        if (candidata != null && passaNoFiltro(candidata)) {
+            proximaMidia = candidata;
         }
+    }
+
+    if (proximaMidia == null) {
+        for (Midia m : playlistPrincipal) {
+            if (passaNoFiltro(m)) {
+                proximaMidia = m;
+                break;
+            }
+        }
+    }
+
+    // Tocar ou parar
+    if (proximaMidia != null) {
+        tocar(proximaMidia);
+    } else if (midiaAtual != null) {
+        midiaAtual.parar();
+        midiaAtual = null;
     }
 }
 
+   // Logicamente, o método anterior também precisa ser adaptado para o filtro
     public void anterior() {
-        if (playlistPrincipal.isEmpty() || midiaAtual == null) {
+    if (playlistPrincipal.isEmpty())
+        return;
+
+    int indexAtual;
+
+    // Se não há mídia atual, começa do fim
+    if (midiaAtual == null) {
+        indexAtual = playlistPrincipal.size();
+    } else {
+        indexAtual = playlistPrincipal.indexOf(midiaAtual);
+    }
+
+    // Volta procurando alguém que passe no filtro
+    for (int i = indexAtual - 1; i >= 0; i--) {
+        Midia candidata = playlistPrincipal.get(i);
+
+        if (passaNoFiltro(candidata)) {
+            tocar(candidata);
             return;
         }
+    }
 
-        int indexAtual = playlistPrincipal.indexOf(midiaAtual);
+    // Se chegou no início e não achou, faz loop do final
+    for (int i = playlistPrincipal.size() - 1; i >= 0; i--) {
+        Midia candidata = playlistPrincipal.get(i);
 
-        if (indexAtual > 0) {
-            if (midiaAtual.getTempoAtual() > 3) {
-                tocar(midiaAtual);
-                return;
-            } else {
-                Midia anterior = playlistPrincipal.get(indexAtual - 1);
-                tocar(anterior);
-            }
-
-        } else {
-            Midia anterior = playlistPrincipal.get(playlistPrincipal.size() - 1);
-
-            tocar(anterior);
+        if (passaNoFiltro(candidata)) {
+            tocar(candidata);
+            return;
         }
     }
+
+    // Se nada passou no filtro,para
+    if (midiaAtual != null) {
+        midiaAtual.parar();
+        midiaAtual = null;
+    }
+}
+
+
+        
 
     public void parar() {
         if (midiaAtual != null) {
