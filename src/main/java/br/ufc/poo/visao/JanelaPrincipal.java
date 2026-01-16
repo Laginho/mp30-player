@@ -8,8 +8,7 @@ import br.ufc.poo.controle.estrategias.ReproducaoRepetir;
 import br.ufc.poo.controle.estrategias.ReproducaoSequencial;
 import br.ufc.poo.modelo.Midia;
 
-import java.awt.BorderLayout;
-import java.awt.FlowLayout;
+import java.awt.*;
 
 public class JanelaPrincipal extends JFrame {
 
@@ -30,7 +29,7 @@ public class JanelaPrincipal extends JFrame {
         // Painel inferior
         JPanel painelControles = new JPanel(new FlowLayout());
         JButton btnPlay = new JButton("Play");
-        JButton btnStop = new JButton("Stop");
+        JButton btnStop = new JButton("Stop");  
 
         painelControles.add(btnPlay);
         painelControles.add(btnStop);
