@@ -43,10 +43,8 @@ public class JanelaPrincipal extends JFrame {
 
         // Botão Stop
         btnStop.addActionListener(e -> {
-            Midia atual = controller.getMidiaAtual();
-            if (atual != null) {
-                atual.parar();
-            }
+             controller.parar();
+             telaBiblioteca.pararProgresso();
         });
 
         // Permite que o usuário escolha o modo de reprodução
