@@ -12,7 +12,6 @@ import javax.swing.Timer;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
-import java.util.Arrays;
 import java.awt.event.ActionListener;
 import java.util.*;
 
@@ -67,15 +66,9 @@ public class TelaBiblioteca extends JPanel {
         btnAnterior = ComponentesCustomizados.criarBotao("<<");
 
         btnProxima.addActionListener(e -> {
-            controller.proxima();
-            Midia atual = controller.getMidiaAtual();
-            tocarMidia(atual);
-        });
-        btnAnterior.addActionListener(e -> {
-            controller.anterior();
-            Midia atual = controller.getMidiaAtual();
-            tocarMidia(atual);
-        });
+           controller.proxima();
+         tocarMidia(controller.getMidiaAtual());
+    });
 
         JPanel painelControles = new JPanel();
         painelControles.add(btnAnterior);
@@ -136,23 +129,41 @@ public class TelaBiblioteca extends JPanel {
         //Tratamento dos filtros de áudio/música
         chkSoMusicas = new JCheckBox("Músicas");
         chkSoAudios = new JCheckBox("Áudios");
-
         JPanel painelFiltros = new JPanel(new FlowLayout(FlowLayout.LEFT));
         painelFiltros.add(chkSoMusicas);
         painelFiltros.add(chkSoAudios);
 
-        this.add(painelFiltros, BorderLayout.SOUTH);
+        this.add(painelFiltros, BorderLayout.WEST);
         ActionListener filtroListener = e -> atualizarListaMidias(); 
 
-chkSoMusicas.addActionListener(filtroListener);
-chkSoAudios.addActionListener(filtroListener);
+        chkSoMusicas.addActionListener(filtroListener);
+        chkSoAudios.addActionListener(filtroListener);
+
+        
     }
-// 3. Criação de método para" limpar" a fila de reprodução 
+    //  Criação de método para" limpar" a fila de reprodução 
         public void limparFilaReproducao() {
             if(!modeloFila.isEmpty()) {
                 modeloFila.remove(0);
             }
     }
+    // Para tratar da questão do filtro vamos criar métodos auxiliares
+    public boolean filtroMidia(Midia m){
+        if (chkSoMusicas.isSelected() && m.isAudio())
+            return false;
+
+        if (chkSoAudios.isSelected() && m.isMusica())
+            return false;
+
+        return true;
+    }
+    public boolean isSoMusicas() {
+            return chkSoMusicas.isSelected();
+        }
+
+        public boolean isSoAudios() {
+            return chkSoAudios.isSelected();
+        }
 
     private void escolherPasta() {
         JFileChooser chooser = new JFileChooser();
