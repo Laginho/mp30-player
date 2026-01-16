@@ -8,7 +8,8 @@ import br.ufc.poo.controle.estrategias.ReproducaoRepetir;
 import br.ufc.poo.controle.estrategias.ReproducaoSequencial;
 import br.ufc.poo.modelo.Midia;
 
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.FlowLayout;
 
 public class JanelaPrincipal extends JFrame {
 
@@ -29,24 +30,15 @@ public class JanelaPrincipal extends JFrame {
         // Painel inferior
         JPanel painelControles = new JPanel(new FlowLayout());
         JButton btnPlay = new JButton("Play");
-        JButton btnStop = new JButton("Stop");  
+        JButton btnStop = new JButton("Stop");
 
         painelControles.add(btnPlay);
         painelControles.add(btnStop);
 
         // Botão Play
         btnPlay.addActionListener(e -> {
-            Midia selecionada = telaBiblioteca.getMidiaSelecionada();
-
-            if (selecionada != null) {
-                controller.tocar(selecionada);
-                telaBiblioteca.tocarMidia(selecionada);
-            } else {
-                // Não há seleção → deixa o controller decidir
-                controller.proxima();
-                Midia atual = controller.getMidiaAtual();
-                telaBiblioteca.tocarMidia(atual);
-            }
+             controller.proxima();
+            telaBiblioteca.tocarMidia(controller.getMidiaAtual());
         });
 
         // Botão Stop
