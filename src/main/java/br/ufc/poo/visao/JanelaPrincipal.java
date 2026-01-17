@@ -6,6 +6,7 @@ import br.ufc.poo.controle.PlayerController;
 import br.ufc.poo.controle.estrategias.ReproducaoAleatoria;
 import br.ufc.poo.controle.estrategias.ReproducaoRepetir;
 import br.ufc.poo.controle.estrategias.ReproducaoSequencial;
+import br.ufc.poo.excecoes.MidiaJaTocandoException;
 import br.ufc.poo.excecoes.MidiaNaoEncontradaException;
 
 import java.awt.BorderLayout;
@@ -37,18 +38,29 @@ public class JanelaPrincipal extends JFrame {
 
         // Botão Play
         btnPlay.addActionListener(ev -> {
-            try {
-                controller.proxima();
-            } catch (MidiaNaoEncontradaException e) {
-                System.out.println("[ERRO] " + e.getMessage());
+            System.out.println(">> Comando: Play");
+
+            if (controller.getMidiaAtual() == null) {
+                try {
+                    controller.tentar_tocar(controller.getMidiaAtual());
+                } catch (MidiaNaoEncontradaException | MidiaJaTocandoException e) {
+                    System.out.println("[ERRO] " + e.getMessage());
+                    return;
+                }
+            } else {
+                try {
+                    controller.proxima();
+                } catch (MidiaNaoEncontradaException e) {
+                    System.out.println("[ERRO] " + e.getMessage());
+                }
             }
-            telaBiblioteca.tocarMidia(controller.getMidiaAtual());
         });
 
         // Botão Stop
         btnStop.addActionListener(e -> {
             controller.parar();
             telaBiblioteca.pararProgresso();
+            controller.limpar();
         });
 
         // Permite que o usuário escolha o modo de reprodução

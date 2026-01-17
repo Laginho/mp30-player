@@ -1,6 +1,7 @@
 package br.ufc.poo.controle;
 
 import br.ufc.poo.controle.estrategias.EstrategiaReproducao;
+import br.ufc.poo.controle.estrategias.ReproducaoAleatoria;
 import br.ufc.poo.controle.estrategias.ReproducaoSequencial;
 import br.ufc.poo.excecoes.MidiaJaTocandoException;
 import br.ufc.poo.excecoes.MidiaNaoEncontradaException;
@@ -96,9 +97,6 @@ public class PlayerController {
     }
 
     public void proxima() throws MidiaNaoEncontradaException {
-        if (playlistPrincipal.isEmpty())
-            throw new MidiaNaoEncontradaException("Playlist vazia.");
-
         Midia proximaMidia = null;
 
         // Fila de prioridade
@@ -112,6 +110,9 @@ public class PlayerController {
                 break;
             }
         }
+
+        System.out.println("[DEBUG] Tentando pegar próxima música...");
+        System.out.println("[DEBUG] Estratégia: " + estrategia.getClass().getSimpleName());
 
         // Playlist com estratégia
         if (proximaMidia == null && !playlistPrincipal.isEmpty()) {
@@ -186,5 +187,18 @@ public class PlayerController {
 
     public List<Midia> getFilaReproducao() {
         return filaReproducao;
+    }
+
+    public List<Midia> getPlaylistPrincipal() {
+        return playlistPrincipal;
+    }
+
+    public void limpar() {
+        filaReproducao.clear();
+        midiaAtual = null;
+
+        if (estrategia instanceof ReproducaoAleatoria) {
+            estrategia = new ReproducaoAleatoria();
+        }
     }
 }

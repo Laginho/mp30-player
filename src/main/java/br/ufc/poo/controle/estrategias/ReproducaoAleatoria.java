@@ -28,6 +28,7 @@ public class ReproducaoAleatoria implements EstrategiaReproducao {
 
         if (listaEmbaralhada.isEmpty() || listaEmbaralhada.size() != playlistOriginal.size()) {
             embaralhar(playlistOriginal);
+            return listaEmbaralhada.get(0);
         }
 
         indiceAtual++;
@@ -59,6 +60,8 @@ public class ReproducaoAleatoria implements EstrategiaReproducao {
     // A mídia atual deve ser a primeira, e o resto é aleatório
     private void embaralhar(List<Midia> original) {
 
+        boolean check;
+
         do {
             List<Midia> temp = original.subList(1, original.size());
             ArrayList<Midia> listaParcial = new ArrayList<>(temp);
@@ -68,8 +71,17 @@ public class ReproducaoAleatoria implements EstrategiaReproducao {
             listaEmbaralhada.add(original.get(0));
             listaEmbaralhada.addAll(listaParcial);
             indiceAtual = 0;
-        } while (listaEmbaralhada.equals(original)); // Evita a mesma ordem
+
+            check = listaEmbaralhada.equals(original) ||
+                    listaEmbaralhada.equals(original.reversed());
+
+        } while (check); // Evita imitar a ordem sequencial
 
         System.out.println("[DEBUG] Playlist re-embaralhada para modo aleatório.");
+
+        System.out.println("[DEBUG] Nova ordem:");
+        for (Midia m : listaEmbaralhada) {
+            System.out.println("   - " + m.getTitulo());
+        }
     }
 }

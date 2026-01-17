@@ -29,7 +29,6 @@ public class TelaBiblioteca extends JPanel {
     private Timer timer;
     private int segundosAtuais;
     private JLabel labelTempo;
-    // Novos atributos para criados para resolver a distinção audio/música
     private JCheckBox chkSoMusicas;
     private JCheckBox chkSoAudios;
     private ArrayList<Midia> todasAsMidias;
@@ -65,6 +64,14 @@ public class TelaBiblioteca extends JPanel {
         btnProxima.addActionListener(ev -> {
             try {
                 controller.proxima();
+            } catch (MidiaNaoEncontradaException e) {
+                System.out.println("[ERRO] " + e.getMessage());
+            }
+        });
+
+        btnProxima.addActionListener(ev -> {
+            try {
+                controller.anterior();
             } catch (MidiaNaoEncontradaException e) {
                 System.out.println("[ERRO] " + e.getMessage());
             }
