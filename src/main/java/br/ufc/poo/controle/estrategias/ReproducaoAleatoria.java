@@ -21,17 +21,17 @@ public class ReproducaoAleatoria implements EstrategiaReproducao {
     }
 
     @Override
-    public Midia obterProxima(List<Midia> playlistOriginal, Midia atual)
-            throws MidiaNaoEncontradaException {
+    public Midia obterProxima(List<Midia> playlistOriginal, Midia atual) throws MidiaNaoEncontradaException {
         if (playlistOriginal == null || playlistOriginal.isEmpty()) {
             throw new MidiaNaoEncontradaException("Playlist vazia ou nula.");
         }
 
-        indiceAtual++;
-
-        if (indiceAtual >= listaEmbaralhada.size()) {
-
+        if (listaEmbaralhada.isEmpty() || listaEmbaralhada.size() != playlistOriginal.size()) {
+            embaralhar(playlistOriginal);
         }
+
+        indiceAtual++;
+        indiceAtual %= playlistOriginal.size();
 
         return listaEmbaralhada.get(indiceAtual);
     }
