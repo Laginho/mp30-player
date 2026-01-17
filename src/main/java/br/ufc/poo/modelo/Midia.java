@@ -1,26 +1,24 @@
 package br.ufc.poo.modelo;
 
+import br.ufc.poo.modelo.interfaces.OnMidiaFinalizadaListener;
 import br.ufc.poo.modelo.interfaces.Reproduzivel;
 
 public abstract class Midia implements Reproduzivel {
     protected String titulo;
     protected String caminho;
     protected int duracao; // em segundos
-    protected boolean favorita;
-    protected boolean reproduzindo;
     protected int tempoAtual; // em segundos
+    protected boolean reproduzindo;
+    protected OnMidiaFinalizadaListener listener;
 
-    // 1. Construtor
     public Midia(String titulo, String caminho, int duracao) {
         this.titulo = titulo;
         this.caminho = caminho;
         this.duracao = duracao;
-        this.favorita = false;
-        this.reproduzindo = false;
         this.tempoAtual = 0;
+        this.reproduzindo = false;
     }
 
-    // 2. Getters e setters
     public String getTitulo() {
         return titulo;
     }
@@ -33,16 +31,16 @@ public abstract class Midia implements Reproduzivel {
         return tempoAtual;
     }
 
+    public void setTempoAtual(int tempoAtual) {
+        this.tempoAtual = tempoAtual;
+    }
+
     public void setTitulo(String titulo) {
         this.titulo = titulo;
     }
 
     public void setDuracao(int duracao) {
         this.duracao = duracao;
-    }
-
-    public boolean isFavorita() {
-        return favorita;
     }
 
     public boolean isReproduzindo() {
@@ -57,43 +55,41 @@ public abstract class Midia implements Reproduzivel {
         this.caminho = caminho;
     }
 
-    // 3. Favoritos
-    public void marcarComoFavorita() {
-        this.favorita = true;
-    }
-
-    public void desmarcarComoFavorita() {
-        this.favorita = false;
-    }
-
-    // 4. Duração em formato usual
     public String getDuracaoUsual() {
         int minutos = duracao / 60;
         int segundos = duracao % 60;
         return minutos + "min " + segundos + "s";
     }
 
-    // 5. Controle de reprodução (interface Reproduzivel)
     @Override
     public void reproduzir() {
         this.reproduzindo = true;
     }
 
     @Override
-    public void pausar() {
+    public void parar() {
         this.reproduzindo = false;
     }
 
-    // 🔹 6. Controle de progresso (genérico)
-    public void avancar(int segundos) {
-        tempoAtual = Math.min(tempoAtual + segundos, duracao);
-        // Garante que não ultrapasse a duração
+    public void setOnMidiaFinalizadaListener(OnMidiaFinalizadaListener listener) {
+        this.listener = listener;
     }
 
-    public void retroceder(int segundos) {
-        tempoAtual = Math.max(tempoAtual - segundos, 0);
-        // Garante que não fique negativo
+    protected void notificarFim() {
+        if (listener != null) {
+            listener.onMidiaFinalizada();
+        }
     }
+
     public abstract String toString();
+    
+    // Como proposto na reunião, a distinção de aúdio e música
+    // vai ser feita com base no tempo de duração 
+    public boolean isMusica() {
+        return this.duracao <= 600; // 10 minutos como base 
+    }
+    public boolean isAudio() {
+        return this.duracao > 600; 
+    }
 
 }

@@ -27,4 +27,27 @@ public class ReproducaoSequencial implements EstrategiaReproducao {
 
         return null;
     }
+
+    @Override
+    public Midia obterAnterior(List<Midia> playlist, Midia atual) {
+        if (playlist == null || playlist.isEmpty()) {
+            return null;
+        }
+
+        if (atual == null) {
+            return playlist.get(0);
+        }
+
+        int indiceAtual = playlist.indexOf(atual);
+
+        if (indiceAtual == -1) {
+            return playlist.get(0);
+        }
+
+        if (indiceAtual - 1 >= 0) {
+            return playlist.get(indiceAtual - 1);
+        }
+
+        return null;
+    }
 }

@@ -6,9 +6,11 @@ import br.ufc.poo.controle.PlayerController;
 import br.ufc.poo.controle.estrategias.ReproducaoAleatoria;
 import br.ufc.poo.controle.estrategias.ReproducaoRepetir;
 import br.ufc.poo.controle.estrategias.ReproducaoSequencial;
-import br.ufc.poo.modelo.Midia;
+import br.ufc.poo.excecoes.MidiaJaTocandoException;
+import br.ufc.poo.excecoes.MidiaNaoEncontradaException;
 
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.FlowLayout;
 
 public class JanelaPrincipal extends JFrame {
 
@@ -16,11 +18,9 @@ public class JanelaPrincipal extends JFrame {
     private TelaBiblioteca telaBiblioteca;
 
     public JanelaPrincipal() {
-        // "Atributos" da classe são inicializados no construtor
-        // para facilitar testes e reduzir acoplamento entre classes
         controller = new PlayerController();
         telaBiblioteca = new TelaBiblioteca(controller);
-
+        controller.setTela(telaBiblioteca);
         this.setTitle("MP30 Player");
         this.setSize(600, 400);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -28,27 +28,47 @@ public class JanelaPrincipal extends JFrame {
 
         setLayout(new BorderLayout());
 
-        // 🔹 Painel inferior (controles)
+        // Painel inferior
         JPanel painelControles = new JPanel(new FlowLayout());
         JButton btnPlay = new JButton("Play");
-        JButton btnPause = new JButton("Pause");
+        JButton btnStop = new JButton("Stop");
 
         painelControles.add(btnPlay);
-        painelControles.add(btnPause);
-        // 🔹 Ações dos botões
-        btnPlay.addActionListener(e -> {
-            Midia selecionada = telaBiblioteca.getMidiaSelecionada();
+        painelControles.add(btnStop);
 
-            if (selecionada != null) {
-                controller.tocar(selecionada);
-                telaBiblioteca.tocarMidia(selecionada);
+        // Botão Play
+        btnPlay.addActionListener(ev -> {
+            System.out.println(">> Comando: Play");
+
+            if (telaBiblioteca.getMidiaSelecionada() != null) {
+                try {
+                    if (controller.getMidiaAtual() != null) {
+                        controller.getMidiaAtual().parar();
+                    }
+                    controller.setMidiaAtual(telaBiblioteca.getMidiaSelecionada());
+                    controller.tentar_tocar(controller.getMidiaAtual());
+                } catch (MidiaJaTocandoException | MidiaNaoEncontradaException e) {
+                    System.out.println("[ERRO] " + e.getMessage());
+                }
             } else {
-                // Não há seleção → deixa o controller decidir
-                controller.proxima();
-                Midia atual = controller.getMidiaAtual();
-                telaBiblioteca.tocarMidia(atual);
+                try {
+                    controller.getMidiaAtual().parar();
+                    controller.proxima();
+                } catch (MidiaNaoEncontradaException e) {
+                    System.out.println("[ERRO] " + e.getMessage());
+                }
             }
+
+            telaBiblioteca.tocarMidia(controller.getMidiaAtual());
         });
+
+        // Botão Stop
+        btnStop.addActionListener(e -> {
+            controller.parar();
+            telaBiblioteca.pararProgresso();
+            controller.limpar();
+        });
+
         // Permite que o usuário escolha o modo de reprodução
         String[] modosReproducao = {
                 "Sequencial", "Aleatório", "Repetir"
@@ -65,22 +85,33 @@ public class JanelaPrincipal extends JFrame {
                     break;
 
                 case "Aleatório":
-                    controller.setEstrategia(new ReproducaoAleatoria());
-                    break;
+                    if (telaBiblioteca.isSoAudios()) {
 
+                     JOptionPane.showMessageDialog(
+                    this,
+                    "Reprodução Aleatória indisponível para áudios.",
+                    "Modo indisponível",
+                     JOptionPane.WARNING_MESSAGE
+                     );
+
+                     SwingUtilities.invokeLater(() ->
+                     comboModo.setSelectedItem("Sequencial")
+                        );
+
+                     } else {
+                         controller.setEstrategia(new ReproducaoAleatoria());
+                 }
+                                break;
                 case "Repetir":
                     controller.setEstrategia(new ReproducaoRepetir());
                     break;
             }
         });
 
-        // 🔹 Adiciona tudo na janela
-
         add(telaBiblioteca, BorderLayout.CENTER);
         add(painelControles, BorderLayout.SOUTH);
 
         setVisible(true);
-
     }
 
     public static void main(String[] args) {

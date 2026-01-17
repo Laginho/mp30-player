@@ -1,6 +1,9 @@
 package br.ufc.poo.modelo;
 
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+
+import javazoom.jl.decoder.JavaLayerException;
 import javazoom.jl.player.Player;
 
 public class Musica extends Midia {
@@ -44,22 +47,30 @@ public class Musica extends Midia {
         }
 
         if (reproduzindo) {
-            return; // Já está reproduzindo
+            System.out.println("Música já está em reprodução: " + titulo);
+            return;
+        }
+
+        if (threadMusica != null && threadMusica.isAlive()) {
+            System.out.println("Música já está sendo reproduzida em outra thread: " + titulo);
+            return;
         }
 
         super.reproduzir();
-
-        if (threadMusica != null && threadMusica.isAlive()) {
-            return; // Já está sendo reproduzida em outra thread
-        }
 
         threadMusica = new Thread(() -> {
             try {
                 FileInputStream fis = new FileInputStream(caminho);
                 player = new Player(fis);
                 player.play();
-                this.reproduzindo = false;
-            } catch (Exception e) {
+                // Música terminou naturalmente
+                if (this.reproduzindo) {
+                    this.reproduzindo = false;
+                    notificarFim();
+                }
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            } catch (JavaLayerException e) {
                 e.printStackTrace();
             }
         });
@@ -71,17 +82,15 @@ public class Musica extends Midia {
     }
 
     @Override
-    public void pausar() {
-        super.pausar();
+    public void parar() {
+        super.parar();
+
         if (player != null) {
             player.close();
-            reproduzindo = false;
-            threadMusica = null;
-            System.out.println("Música pausada: " + titulo);
         }
-    }
 
-    // 2.Getters e Setters
+        System.out.println("Música parada: " + titulo);
+    }
 
     public String getArtista() {
         return artista;
