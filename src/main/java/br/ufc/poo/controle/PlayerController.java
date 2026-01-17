@@ -168,20 +168,57 @@ public class PlayerController {
 
     // Logicamente, o método anterior também precisa ser adaptado para o filtro
     public void anterior() throws MidiaNaoEncontradaException {
-        if (playlistPrincipal.isEmpty())
-            throw new MidiaNaoEncontradaException("Playlist vazia.");
-            // Parar a música atual ANTES de tocar a anterior
-    
-            if (midiaAtual != null) {
-                midiaAtual.parar();
+         Midia midiaAnterior = null;
+
+    if (playlistPrincipal.isEmpty())
+        throw new MidiaNaoEncontradaException("Playlist vazia.");
+
+    if (midiaAtual != null) {
+        midiaAtual.parar();
     }
 
-        try {
-            Midia midiaAnterior = estrategia.obterAnterior(playlistPrincipal, midiaAtual);
-            tocar(midiaAnterior);
-        } catch (MidiaNaoEncontradaException e) {
-            System.out.println("[ERROR] " + e.getMessage());
+    System.out.println("[DEBUG] Tentando pegar mídia anterior...");
+    System.out.println("[DEBUG] Estratégia: " + estrategia.getClass().getSimpleName());
+
+    // Busca pela estratégia respeitando filtro
+    if (midiaAtual != null) {
+        Midia candidata = midiaAtual;
+        int tentativas = 0;
+
+        do {
+            try {
+                candidata = estrategia.obterAnterior(playlistPrincipal, candidata);
+            } catch (MidiaNaoEncontradaException e) {
+                candidata = null;
+            }
+
+            tentativas++;
+        } while (candidata != null
+                && !passaNoFiltro(candidata)
+                && tentativas <= playlistPrincipal.size());
+
+        if (candidata != null && passaNoFiltro(candidata)) {
+            midiaAnterior = candidata;
         }
+    }
+
+    // Fallback: primeira mídia válida no filtro (sentido inverso)
+    if (midiaAnterior == null) {
+        for (int i = playlistPrincipal.size() - 1; i >= 0; i--) {
+            Midia m = playlistPrincipal.get(i);
+            if (passaNoFiltro(m)) {
+                midiaAnterior = m;
+                break;
+            }
+        }
+    }
+
+    // Tocar ou parar
+    if (midiaAnterior != null) {
+        tocar(midiaAnterior);
+    } else {
+        midiaAtual = null;
+    }
     }
 
     public void parar() {
