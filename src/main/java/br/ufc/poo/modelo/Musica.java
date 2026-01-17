@@ -63,7 +63,11 @@ public class Musica extends Midia {
                 FileInputStream fis = new FileInputStream(caminho);
                 player = new Player(fis);
                 player.play();
-                this.reproduzindo = false;
+                // Música terminou naturalmente
+                if (this.reproduzindo) {
+                    this.reproduzindo = false;
+                    notificarFim();
+                }
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
             } catch (JavaLayerException e) {

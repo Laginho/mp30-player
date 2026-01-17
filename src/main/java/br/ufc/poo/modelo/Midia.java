@@ -1,5 +1,6 @@
 package br.ufc.poo.modelo;
 
+import br.ufc.poo.modelo.interfaces.OnMidiaFinalizadaListener;
 import br.ufc.poo.modelo.interfaces.Reproduzivel;
 
 public abstract class Midia implements Reproduzivel {
@@ -8,6 +9,7 @@ public abstract class Midia implements Reproduzivel {
     protected int duracao; // em segundos
     protected int tempoAtual; // em segundos
     protected boolean reproduzindo;
+    protected OnMidiaFinalizadaListener listener;
 
     public Midia(String titulo, String caminho, int duracao) {
         this.titulo = titulo;
@@ -67,6 +69,16 @@ public abstract class Midia implements Reproduzivel {
     @Override
     public void parar() {
         this.reproduzindo = false;
+    }
+
+    public void setOnMidiaFinalizadaListener(OnMidiaFinalizadaListener listener) {
+        this.listener = listener;
+    }
+
+    protected void notificarFim() {
+        if (listener != null) {
+            listener.onMidiaFinalizada();
+        }
     }
 
     public abstract String toString();

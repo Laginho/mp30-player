@@ -59,6 +59,19 @@ public class PlayerController {
             throw new MidiaJaTocandoException("A mídia '" + midia.getTitulo() + "' já está em reprodução.");
         }
 
+        // Registra o listener para tocar a próxima quando acabar
+        midiaAtual.setOnMidiaFinalizadaListener(() -> {
+            try {
+                System.out.println("[INFO] Música finalizada, tocando próxima...");
+                proxima();
+                if (tela != null) {
+                    tela.tocarMidia(midiaAtual);
+                }
+            } catch (MidiaNaoEncontradaException e) {
+                System.out.println("[INFO] Fim da playlist.");
+            }
+        });
+
         midiaAtual.reproduzir();
 
         System.out.println("[INFO] Tocando agora: " + midiaAtual.getTitulo());
