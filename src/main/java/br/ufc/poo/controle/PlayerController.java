@@ -17,16 +17,17 @@ public class PlayerController {
     private List<Midia> filaReproducao;
     private Midia midiaAtual;
     private EstrategiaReproducao estrategia;
-    private TelaBiblioteca tela; // atributo adicionado para resolver a questão da limpeza da fila 
+    private TelaBiblioteca tela; // atributo adicionado para resolver a questão da limpeza da fila
 
     public PlayerController() {
         this.playlistPrincipal = new ArrayList<>();
         this.filaReproducao = new ArrayList<>();
         this.estrategia = new ReproducaoSequencial();
     }
+
     public void setTela(TelaBiblioteca tela) {
         this.tela = tela;
-    } 
+    }
 
     // --- Gerenciamento das Listas ---
 
@@ -79,56 +80,52 @@ public class PlayerController {
     }
 
     public void proxima() {
-        Midia proximaMidia = null;
 
         // A fila de prioridade tem preferência
         if (!filaReproducao.isEmpty()) {
-            proximaMidia = filaReproducao.get(0);
+            midiaAtual = filaReproducao.get(0);
             filaReproducao.remove(0);
-            System.out.println("[INFO] Tocando da Fila de Prioridade: " + proximaMidia.getTitulo());
+            System.out.println("[INFO] Tocando da Fila de Prioridade: " + midiaAtual.getTitulo());
             if (tela != null) {
-            tela.limparFilaReproducao(); // Ajusta para sincrnizar a fila
-            }   
+                tela.limparFilaReproducao(); // Ajusta para sincronizar a fila
+            }
         } else {
-            proximaMidia = estrategia.obterProxima(playlistPrincipal, midiaAtual);
+            try {
+                midiaAtual = estrategia.obterProxima(playlistPrincipal, midiaAtual);
+            } catch (MidiaNaoEncontradaException e) {
+                System.out.println("[ERROR] " + e.getMessage());
+            }
         }
-        if (proximaMidia == null && !playlistPrincipal.isEmpty()) {
-        System.out.println("[INFO] Fim da playlist. Reiniciando...");
-        proximaMidia = playlistPrincipal.get(0);
-        // if ajustado para o caso de chegar ao fim da playlist
-        // Agora o botão de próxima volta para o inicio certinho 
-    }
-        if (proximaMidia != null) {
-        tocar(proximaMidia);
-    } else {
-        // caso extremo: playlist vazia
+        if (midiaAtual == null && !playlistPrincipal.isEmpty()) {
+            System.out.println("[INFO] Fim da playlist. Reiniciando...");
+            midiaAtual = playlistPrincipal.get(0);
+        }
         if (midiaAtual != null) {
-            midiaAtual.parar();
-            midiaAtual = null;
+            tocar(midiaAtual);
+        } else {
+            // caso extremo: playlist vazia
+            if (midiaAtual != null) {
+                midiaAtual.parar();
+                midiaAtual = null;
+            }
         }
     }
-}
 
     public void anterior() {
-        if (playlistPrincipal.isEmpty() || midiaAtual == null) {
-            return;
+        try {
+            midiaAtual = estrategia.obterAnterior(playlistPrincipal, midiaAtual);
+        } catch (MidiaNaoEncontradaException e) {
+            System.out.println("[ERROR] " + e.getMessage());
         }
 
-        int indexAtual = playlistPrincipal.indexOf(midiaAtual);
-
-        if (indexAtual > 0) {
-            if (midiaAtual.getTempoAtual() > 3) {
-                tocar(midiaAtual);
-                return;
-            } else {
-                Midia anterior = playlistPrincipal.get(indexAtual - 1);
-                tocar(anterior);
-            }
-
+        if (midiaAtual != null) {
+            tocar(midiaAtual);
         } else {
-            Midia anterior = playlistPrincipal.get(playlistPrincipal.size() - 1);
-
-            tocar(anterior);
+            // caso extremo: playlist vazia
+            if (midiaAtual != null) {
+                midiaAtual.parar();
+                midiaAtual = null;
+            }
         }
     }
 

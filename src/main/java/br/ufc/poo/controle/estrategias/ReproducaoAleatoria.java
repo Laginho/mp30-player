@@ -1,5 +1,6 @@
 package br.ufc.poo.controle.estrategias;
 
+import br.ufc.poo.excecoes.MidiaNaoEncontradaException;
 import br.ufc.poo.modelo.Midia;
 
 import java.util.ArrayList;
@@ -20,9 +21,9 @@ public class ReproducaoAleatoria implements EstrategiaReproducao {
     }
 
     @Override
-    public Midia obterProxima(List<Midia> playlistOriginal, Midia atual) {
+    public Midia obterProxima(List<Midia> playlistOriginal, Midia atual) throws MidiaNaoEncontradaException {
         if (playlistOriginal == null || playlistOriginal.isEmpty()) {
-            return null;
+            throw new MidiaNaoEncontradaException("Playlist vazia ou nula.");
         }
 
         if (listaEmbaralhada.isEmpty() || listaEmbaralhada.size() != playlistOriginal.size()) {
@@ -33,7 +34,26 @@ public class ReproducaoAleatoria implements EstrategiaReproducao {
 
         if (indiceAtual >= listaEmbaralhada.size()) {
             listaEmbaralhada.clear();
-            return null;
+            throw new MidiaNaoEncontradaException("Fim da playlist.");
+        }
+
+        return listaEmbaralhada.get(indiceAtual);
+    }
+
+    @Override
+    public Midia obterAnterior(List<Midia> playlistOriginal, Midia midiaAtual) throws MidiaNaoEncontradaException {
+        if (playlistOriginal == null || playlistOriginal.isEmpty()) {
+            throw new MidiaNaoEncontradaException("Playlist vazia ou nula.");
+        }
+
+        if (listaEmbaralhada.isEmpty() || listaEmbaralhada.size() != playlistOriginal.size()) {
+            embaralhar(playlistOriginal);
+        }
+
+        indiceAtual--;
+
+        if (indiceAtual < 0) {
+            indiceAtual = 0;
         }
 
         return listaEmbaralhada.get(indiceAtual);

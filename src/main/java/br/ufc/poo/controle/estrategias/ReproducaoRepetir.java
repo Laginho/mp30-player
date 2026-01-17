@@ -10,4 +10,9 @@ public class ReproducaoRepetir implements EstrategiaReproducao {
         return atual;
     }
 
+    @Override
+    public Midia obterAnterior(List<Midia> fila, Midia atual) {
+        return atual;
+    }
+
 }
