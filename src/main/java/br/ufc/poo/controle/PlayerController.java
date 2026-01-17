@@ -116,7 +116,12 @@ public class PlayerController {
             int tentativas = 0;
 
             do {
-                candidata = estrategia.obterProxima(playlistPrincipal, candidata);
+                try {
+                    candidata = estrategia.obterProxima(playlistPrincipal, candidata);
+                } catch (MidiaNaoEncontradaException e) {
+                    candidata = null;
+                    e.printStackTrace();
+                }
                 tentativas++;
             } while (candidata != null
                     && !passaNoFiltro(candidata)
