@@ -1,6 +1,7 @@
 package br.ufc.poo.visao;
 
 import br.ufc.poo.controle.PlayerController;
+import br.ufc.poo.excecoes.MidiaNaoEncontradaException;
 import br.ufc.poo.controle.LeitorMetadados;
 import br.ufc.poo.modelo.Midia;
 import javax.swing.*;
@@ -61,8 +62,12 @@ public class TelaBiblioteca extends JPanel {
         btnProxima = ComponentesCustomizados.criarBotao(">>");
         btnAnterior = ComponentesCustomizados.criarBotao("<<");
 
-        btnProxima.addActionListener(e -> {
-            controller.proxima();
+        btnProxima.addActionListener(ev -> {
+            try {
+                controller.proxima();
+            } catch (MidiaNaoEncontradaException e) {
+                System.out.println("[ERRO] " + e.getMessage());
+            }
             tocarMidia(controller.getMidiaAtual());
         });
 

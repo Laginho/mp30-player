@@ -52,6 +52,7 @@ public class ReproducaoAleatoria implements EstrategiaReproducao {
             indiceAtual = listaEmbaralhada.size() - 1;
         }
 
+        System.out.println("[DEBUG] Voltando para a música anterior: " + listaEmbaralhada.get(indiceAtual).getTitulo());
         return listaEmbaralhada.get(indiceAtual);
     }
 

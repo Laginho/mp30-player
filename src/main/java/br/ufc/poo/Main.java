@@ -3,6 +3,7 @@ package br.ufc.poo;
 import br.ufc.poo.controle.LeitorMetadados;
 import br.ufc.poo.controle.PlayerController;
 import br.ufc.poo.controle.estrategias.ReproducaoAleatoria;
+import br.ufc.poo.excecoes.MidiaNaoEncontradaException;
 import br.ufc.poo.modelo.Musica;
 import br.ufc.poo.visao.JanelaPrincipal;
 
@@ -63,7 +64,11 @@ public class Main {
         System.out.println("\n--- TESTE 1: Sequencial ---");
 
         System.out.println(">> Comando: Próxima (Esperado: md1)");
-        player.proxima();
+        try {
+            player.proxima();
+        } catch (MidiaNaoEncontradaException e) {
+            System.out.println("[ERRO] " + e.getMessage());
+        }
         dormir(5);
 
         // System.out.println(">> Comando: Próxima (Esperado: md2)");
@@ -81,7 +86,11 @@ public class Main {
         // dormir(5);
 
         System.out.println(">> Comando: Próxima (Esperado: ma3 - da fila)");
-        player.proxima();
+        try {
+            player.proxima();
+        } catch (MidiaNaoEncontradaException e) {
+            System.out.println("[ERRO] " + e.getMessage());
+        }
         dormir(5);
 
         // System.out.println(">> Comando: Próxima (Esperado: md3 - da fila)");
@@ -93,7 +102,11 @@ public class Main {
         player.setEstrategia(new ReproducaoAleatoria());
 
         System.out.println(">> Comando: Próxima");
-        player.proxima();
+        try {
+            player.proxima();
+        } catch (MidiaNaoEncontradaException e) {
+            System.out.println("[ERRO] " + e.getMessage());
+        }
         dormir(5);
 
         // System.out.println(">> Comando: Próxima");

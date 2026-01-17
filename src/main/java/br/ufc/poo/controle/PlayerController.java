@@ -95,7 +95,10 @@ public class PlayerController {
         return true;
     }
 
-    public void proxima() {
+    public void proxima() throws MidiaNaoEncontradaException {
+        if (playlistPrincipal.isEmpty())
+            throw new MidiaNaoEncontradaException("Playlist vazia.");
+
         Midia proximaMidia = null;
 
         // Fila de prioridade
@@ -152,43 +155,15 @@ public class PlayerController {
     }
 
     // Logicamente, o método anterior também precisa ser adaptado para o filtro
-    public void anterior() {
+    public void anterior() throws MidiaNaoEncontradaException {
         if (playlistPrincipal.isEmpty())
-            return;
+            throw new MidiaNaoEncontradaException("Playlist vazia.");
 
-        int indexAtual;
-
-        // Se não há mídia atual, começa do fim
-        if (midiaAtual == null) {
-            indexAtual = playlistPrincipal.size();
-        } else {
-            indexAtual = playlistPrincipal.indexOf(midiaAtual);
-        }
-
-        // Volta procurando alguém que passe no filtro
-        for (int i = indexAtual - 1; i >= 0; i--) {
-            Midia candidata = playlistPrincipal.get(i);
-
-            if (passaNoFiltro(candidata)) {
-                tocar(candidata);
-                return;
-            }
-        }
-
-        // Se chegou no início e não achou, faz loop do final
-        for (int i = playlistPrincipal.size() - 1; i >= 0; i--) {
-            Midia candidata = playlistPrincipal.get(i);
-
-            if (passaNoFiltro(candidata)) {
-                tocar(candidata);
-                return;
-            }
-        }
-
-        // Se nada passou no filtro,para
-        if (midiaAtual != null) {
-            midiaAtual.parar();
-            midiaAtual = null;
+        try {
+            Midia midiaAnterior = estrategia.obterAnterior(playlistPrincipal, midiaAtual);
+            tocar(midiaAnterior);
+        } catch (MidiaNaoEncontradaException e) {
+            System.out.println("[ERROR] " + e.getMessage());
         }
     }
 
