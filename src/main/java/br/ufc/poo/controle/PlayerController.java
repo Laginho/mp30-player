@@ -49,11 +49,6 @@ public class PlayerController {
     // --- Controle de Reprodução ---
 
     public void tentar_tocar(Midia midia) throws MidiaJaTocandoException, MidiaNaoEncontradaException {
-        if (midiaAtual != null) {
-            System.out.println("[INFO] Parando mídia atual: " + midiaAtual.getTitulo());
-            midiaAtual.parar();
-        }
-
         midiaAtual = midia;
 
         if (midiaAtual == null) {
@@ -98,6 +93,10 @@ public class PlayerController {
 
     public void proxima() throws MidiaNaoEncontradaException {
         Midia proximaMidia = null;
+
+        if (midiaAtual != null) {
+            midiaAtual.parar();
+        }
 
         // Fila de prioridade
         while (!filaReproducao.isEmpty()) {

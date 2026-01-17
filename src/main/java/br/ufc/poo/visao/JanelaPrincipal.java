@@ -42,6 +42,9 @@ public class JanelaPrincipal extends JFrame {
 
             if (telaBiblioteca.getMidiaSelecionada() != null) {
                 try {
+                    if (controller.getMidiaAtual() != null) {
+                        controller.getMidiaAtual().parar();
+                    }
                     controller.setMidiaAtual(telaBiblioteca.getMidiaSelecionada());
                     controller.tentar_tocar(controller.getMidiaAtual());
                 } catch (MidiaJaTocandoException | MidiaNaoEncontradaException e) {
@@ -49,6 +52,7 @@ public class JanelaPrincipal extends JFrame {
                 }
             } else {
                 try {
+                    controller.getMidiaAtual().parar();
                     controller.proxima();
                 } catch (MidiaNaoEncontradaException e) {
                     System.out.println("[ERRO] " + e.getMessage());
