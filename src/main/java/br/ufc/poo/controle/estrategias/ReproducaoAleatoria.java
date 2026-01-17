@@ -3,7 +3,6 @@ package br.ufc.poo.controle.estrategias;
 import br.ufc.poo.excecoes.MidiaNaoEncontradaException;
 import br.ufc.poo.modelo.Midia;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -58,14 +57,18 @@ public class ReproducaoAleatoria implements EstrategiaReproducao {
 
     // A mídia atual deve ser a primeira, e o resto é aleatório
     private void embaralhar(List<Midia> original) {
-        List<Midia> temp = original.subList(1, original.size());
-        ArrayList<Midia> listaParcial = new ArrayList<>(temp);
-        Collections.shuffle(listaParcial);
 
-        listaEmbaralhada.clear();
-        listaEmbaralhada.add(original.get(0));
-        listaEmbaralhada.addAll(listaParcial);
-        indiceAtual = 0;
+        do {
+            List<Midia> temp = original.subList(1, original.size());
+            ArrayList<Midia> listaParcial = new ArrayList<>(temp);
+            Collections.shuffle(listaParcial);
+
+            listaEmbaralhada.clear();
+            listaEmbaralhada.add(original.get(0));
+            listaEmbaralhada.addAll(listaParcial);
+            indiceAtual = 0;
+        } while (listaEmbaralhada.equals(original)); // Evita a mesma ordem
+
         System.out.println("[DEBUG] Playlist re-embaralhada para modo aleatório.");
     }
 }

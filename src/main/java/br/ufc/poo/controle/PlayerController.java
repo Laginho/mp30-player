@@ -98,7 +98,7 @@ public class PlayerController {
     public void proxima() {
         Midia proximaMidia = null;
 
-        // 1Fila de prioridade
+        // Fila de prioridade
         while (!filaReproducao.isEmpty()) {
             Midia candidata = filaReproducao.remove(0);
             if (passaNoFiltro(candidata)) {
