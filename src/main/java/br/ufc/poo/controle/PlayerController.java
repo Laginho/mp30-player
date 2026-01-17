@@ -8,7 +8,6 @@ import br.ufc.poo.excecoes.MidiaNaoEncontradaException;
 import br.ufc.poo.modelo.Midia;
 import br.ufc.poo.modelo.Musica;
 import br.ufc.poo.visao.TelaBiblioteca;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -171,6 +170,11 @@ public class PlayerController {
     public void anterior() throws MidiaNaoEncontradaException {
         if (playlistPrincipal.isEmpty())
             throw new MidiaNaoEncontradaException("Playlist vazia.");
+            // Parar a música atual ANTES de tocar a anterior
+    
+            if (midiaAtual != null) {
+                midiaAtual.parar();
+    }
 
         try {
             Midia midiaAnterior = estrategia.obterAnterior(playlistPrincipal, midiaAtual);
