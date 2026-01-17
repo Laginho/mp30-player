@@ -85,9 +85,23 @@ public class JanelaPrincipal extends JFrame {
                     break;
 
                 case "Aleatório":
-                    controller.setEstrategia(new ReproducaoAleatoria());
-                    break;
+                    if (telaBiblioteca.isSoAudios()) {
 
+                     JOptionPane.showMessageDialog(
+                    this,
+                    "Reprodução Aleatória indisponível para áudios.",
+                    "Modo indisponível",
+                     JOptionPane.WARNING_MESSAGE
+                     );
+
+                     SwingUtilities.invokeLater(() ->
+                     comboModo.setSelectedItem("Sequencial")
+                        );
+
+                     } else {
+                         controller.setEstrategia(new ReproducaoAleatoria());
+                 }
+                                break;
                 case "Repetir":
                     controller.setEstrategia(new ReproducaoRepetir());
                     break;
