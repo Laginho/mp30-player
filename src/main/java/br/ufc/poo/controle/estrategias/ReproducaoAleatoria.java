@@ -1,6 +1,5 @@
 package br.ufc.poo.controle.estrategias;
 
-import br.ufc.poo.excecoes.LimiteDaPlaylistException;
 import br.ufc.poo.excecoes.MidiaNaoEncontradaException;
 import br.ufc.poo.modelo.Midia;
 
@@ -23,20 +22,15 @@ public class ReproducaoAleatoria implements EstrategiaReproducao {
 
     @Override
     public Midia obterProxima(List<Midia> playlistOriginal, Midia atual)
-            throws MidiaNaoEncontradaException, LimiteDaPlaylistException {
+            throws MidiaNaoEncontradaException {
         if (playlistOriginal == null || playlistOriginal.isEmpty()) {
             throw new MidiaNaoEncontradaException("Playlist vazia ou nula.");
-        }
-
-        if (listaEmbaralhada.isEmpty() || listaEmbaralhada.size() != playlistOriginal.size()) {
-            embaralhar(playlistOriginal);
         }
 
         indiceAtual++;
 
         if (indiceAtual >= listaEmbaralhada.size()) {
-            listaEmbaralhada.clear();
-            throw new LimiteDaPlaylistException("Fim da playlist.");
+
         }
 
         return listaEmbaralhada.get(indiceAtual);
@@ -55,7 +49,7 @@ public class ReproducaoAleatoria implements EstrategiaReproducao {
         indiceAtual--;
 
         if (indiceAtual < 0) {
-            indiceAtual = 0;
+            indiceAtual = listaEmbaralhada.size() - 1;
         }
 
         return listaEmbaralhada.get(indiceAtual);

@@ -2,7 +2,6 @@ package br.ufc.poo.controle;
 
 import br.ufc.poo.controle.estrategias.EstrategiaReproducao;
 import br.ufc.poo.controle.estrategias.ReproducaoSequencial;
-import br.ufc.poo.excecoes.LimiteDaPlaylistException;
 import br.ufc.poo.excecoes.MidiaJaTocandoException;
 import br.ufc.poo.excecoes.MidiaNaoEncontradaException;
 import br.ufc.poo.modelo.Midia;
@@ -122,9 +121,8 @@ public class PlayerController {
                 } catch (MidiaNaoEncontradaException e) {
                     candidata = null;
                     e.printStackTrace();
-                } catch (LimiteDaPlaylistException e) {
-                    candidata = playlistPrincipal.get(0);
                 }
+
                 tentativas++;
             } while (candidata != null
                     && !passaNoFiltro(candidata)
