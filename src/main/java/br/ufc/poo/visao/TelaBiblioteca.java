@@ -3,18 +3,15 @@ package br.ufc.poo.visao;
 import br.ufc.poo.controle.PlayerController;
 import br.ufc.poo.controle.LeitorMetadados;
 import br.ufc.poo.modelo.Midia;
-import br.ufc.poo.modelo.Musica;
 import javax.swing.*;
 import java.awt.*;
-import java.awt.List;
 
-import javax.swing.Timer; 
+import javax.swing.Timer;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
 import java.awt.event.ActionListener;
 import java.util.*;
-
 
 public class TelaBiblioteca extends JPanel {
 
@@ -31,11 +28,10 @@ public class TelaBiblioteca extends JPanel {
     private Timer timer;
     private int segundosAtuais;
     private JLabel labelTempo;
-    //Novos atributos para criados para resolver a distinção audio/música
+    // Novos atributos para criados para resolver a distinção audio/música
     private JCheckBox chkSoMusicas;
-    private JCheckBox chkSoAudios; 
-    private ArrayList<Midia> todasAsMidias; 
-
+    private JCheckBox chkSoAudios;
+    private ArrayList<Midia> todasAsMidias;
 
     public TelaBiblioteca(PlayerController controller) {
         todasAsMidias = new ArrayList<>();
@@ -66,9 +62,9 @@ public class TelaBiblioteca extends JPanel {
         btnAnterior = ComponentesCustomizados.criarBotao("<<");
 
         btnProxima.addActionListener(e -> {
-           controller.proxima();
-         tocarMidia(controller.getMidiaAtual());
-    });
+            controller.proxima();
+            tocarMidia(controller.getMidiaAtual());
+        });
 
         JPanel painelControles = new JPanel();
         painelControles.add(btnAnterior);
@@ -126,7 +122,7 @@ public class TelaBiblioteca extends JPanel {
 
             }
         });
-        //Tratamento dos filtros de áudio/música
+        // Tratamento dos filtros de áudio/música
         chkSoMusicas = new JCheckBox("Músicas");
         chkSoAudios = new JCheckBox("Áudios");
         JPanel painelFiltros = new JPanel(new FlowLayout(FlowLayout.LEFT));
@@ -134,21 +130,22 @@ public class TelaBiblioteca extends JPanel {
         painelFiltros.add(chkSoAudios);
 
         this.add(painelFiltros, BorderLayout.WEST);
-        ActionListener filtroListener = e -> atualizarListaMidias(); 
+        ActionListener filtroListener = e -> atualizarListaMidias();
 
         chkSoMusicas.addActionListener(filtroListener);
         chkSoAudios.addActionListener(filtroListener);
 
-        
     }
-    //  Criação de método para" limpar" a fila de reprodução 
-        public void limparFilaReproducao() {
-            if(!modeloFila.isEmpty()) {
-                modeloFila.remove(0);
-            }
+
+    // Criação de método para" limpar" a fila de reprodução
+    public void limparFilaReproducao() {
+        if (!modeloFila.isEmpty()) {
+            modeloFila.remove(0);
+        }
     }
+
     // Para tratar da questão do filtro vamos criar métodos auxiliares
-    public boolean filtroMidia(Midia m){
+    public boolean filtroMidia(Midia m) {
         if (chkSoMusicas.isSelected() && m.isAudio())
             return false;
 
@@ -157,13 +154,14 @@ public class TelaBiblioteca extends JPanel {
 
         return true;
     }
-    public boolean isSoMusicas() {
-            return chkSoMusicas.isSelected();
-        }
 
-        public boolean isSoAudios() {
-            return chkSoAudios.isSelected();
-        }
+    public boolean isSoMusicas() {
+        return chkSoMusicas.isSelected();
+    }
+
+    public boolean isSoAudios() {
+        return chkSoAudios.isSelected();
+    }
 
     private void escolherPasta() {
         JFileChooser chooser = new JFileChooser();
@@ -214,22 +212,23 @@ public class TelaBiblioteca extends JPanel {
         }
 
         labelStatus.setText(arquivosCarregados + " arquivos carregados");
-        this.atualizarListaMidias(); 
+        this.atualizarListaMidias();
     }
+
     private void atualizarListaMidias() {
-    model.clear();
+        model.clear();
 
-    for (Midia midia : todasAsMidias) {
+        for (Midia midia : todasAsMidias) {
 
-        if (chkSoMusicas.isSelected() && midia.isAudio())
-            continue;
+            if (chkSoMusicas.isSelected() && midia.isAudio())
+                continue;
 
-        if (chkSoAudios.isSelected() && midia.isMusica())
-            continue;
+            if (chkSoAudios.isSelected() && midia.isMusica())
+                continue;
 
-        model.addElement(midia);
+            model.addElement(midia);
+        }
     }
-}
 
     // 🔹 Interface usada pela JanelaPrincipal
     public Midia getMidiaSelecionada() {
@@ -273,15 +272,16 @@ public class TelaBiblioteca extends JPanel {
 
         timer.start();
     }
-    public void pararProgresso() {
-    if (timer != null) {
-        timer.stop();
-    }
 
-    segundosAtuais = 0;
-    sliderTempo.setValue(0);
-    labelTempo.setText("00:00 / 00:00");
-}
+    public void pararProgresso() {
+        if (timer != null) {
+            timer.stop();
+        }
+
+        segundosAtuais = 0;
+        sliderTempo.setValue(0);
+        labelTempo.setText("00:00 / 00:00");
+    }
 
     // Retorna a duração usual formatada mm:ss
     private String formatarTempo(int segundos) {

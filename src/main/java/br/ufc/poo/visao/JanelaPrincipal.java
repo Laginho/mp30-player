@@ -6,7 +6,6 @@ import br.ufc.poo.controle.PlayerController;
 import br.ufc.poo.controle.estrategias.ReproducaoAleatoria;
 import br.ufc.poo.controle.estrategias.ReproducaoRepetir;
 import br.ufc.poo.controle.estrategias.ReproducaoSequencial;
-import br.ufc.poo.modelo.Midia;
 
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
@@ -37,14 +36,14 @@ public class JanelaPrincipal extends JFrame {
 
         // Botão Play
         btnPlay.addActionListener(e -> {
-             controller.proxima();
+            controller.proxima();
             telaBiblioteca.tocarMidia(controller.getMidiaAtual());
         });
 
         // Botão Stop
         btnStop.addActionListener(e -> {
-             controller.parar();
-             telaBiblioteca.pararProgresso();
+            controller.parar();
+            telaBiblioteca.pararProgresso();
         });
 
         // Permite que o usuário escolha o modo de reprodução
