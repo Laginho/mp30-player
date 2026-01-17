@@ -67,9 +67,10 @@ public class TelaBiblioteca extends JPanel {
             } catch (MidiaNaoEncontradaException e) {
                 System.out.println("[ERRO] " + e.getMessage());
             }
+            tocarMidia(controller.getMidiaAtual());
         });
 
-        btnProxima.addActionListener(ev -> {
+        btnAnterior.addActionListener(ev -> {
             try {
                 controller.anterior();
             } catch (MidiaNaoEncontradaException e) {

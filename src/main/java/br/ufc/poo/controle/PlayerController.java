@@ -185,6 +185,10 @@ public class PlayerController {
         return midiaAtual;
     }
 
+    public void setMidiaAtual(Midia midia) {
+        this.midiaAtual = midia;
+    }
+
     public List<Midia> getFilaReproducao() {
         return filaReproducao;
     }

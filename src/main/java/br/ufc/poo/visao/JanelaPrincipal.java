@@ -40,12 +40,12 @@ public class JanelaPrincipal extends JFrame {
         btnPlay.addActionListener(ev -> {
             System.out.println(">> Comando: Play");
 
-            if (controller.getMidiaAtual() == null) {
+            if (telaBiblioteca.getMidiaSelecionada() != null) {
                 try {
+                    controller.setMidiaAtual(telaBiblioteca.getMidiaSelecionada());
                     controller.tentar_tocar(controller.getMidiaAtual());
-                } catch (MidiaNaoEncontradaException | MidiaJaTocandoException e) {
+                } catch (MidiaJaTocandoException | MidiaNaoEncontradaException e) {
                     System.out.println("[ERRO] " + e.getMessage());
-                    return;
                 }
             } else {
                 try {
@@ -54,6 +54,8 @@ public class JanelaPrincipal extends JFrame {
                     System.out.println("[ERRO] " + e.getMessage());
                 }
             }
+
+            telaBiblioteca.tocarMidia(controller.getMidiaAtual());
         });
 
         // Botão Stop
