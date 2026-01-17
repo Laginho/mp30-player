@@ -37,25 +37,14 @@ public class JanelaPrincipal extends JFrame {
 
         // Botão Play
         btnPlay.addActionListener(e -> {
-            Midia selecionada = telaBiblioteca.getMidiaSelecionada();
-
-            if (selecionada != null) {
-                controller.tocar(selecionada);
-                telaBiblioteca.tocarMidia(selecionada);
-            } else {
-                // Não há seleção → deixa o controller decidir
-                controller.proxima();
-                Midia atual = controller.getMidiaAtual();
-                telaBiblioteca.tocarMidia(atual);
-            }
+             controller.proxima();
+            telaBiblioteca.tocarMidia(controller.getMidiaAtual());
         });
 
         // Botão Stop
         btnStop.addActionListener(e -> {
-            Midia atual = controller.getMidiaAtual();
-            if (atual != null) {
-                atual.parar();
-            }
+             controller.parar();
+             telaBiblioteca.pararProgresso();
         });
 
         // Permite que o usuário escolha o modo de reprodução
