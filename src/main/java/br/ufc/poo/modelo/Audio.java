@@ -69,6 +69,10 @@ public class Audio extends Midia {
     public void parar() {
         super.parar();
 
+        if (player != null) {
+            player.close();
+        }
+
         System.out.println("Áudio parado: " + titulo);
     }
 
