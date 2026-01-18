@@ -79,11 +79,11 @@ public class Audio extends Midia {
         System.out.println("Áudio parado: " + titulo);
     }
 
-    public String getautor() {
+    public String getAutor() {
         return autor;
     }
 
-    public void setautor(String autor) {
+    public void setAutor(String autor) {
         this.autor = autor;
     }
 

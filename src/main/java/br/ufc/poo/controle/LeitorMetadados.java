@@ -1,5 +1,7 @@
 package br.ufc.poo.controle;
 
+import br.ufc.poo.modelo.Audio;
+import br.ufc.poo.modelo.Midia;
 import br.ufc.poo.modelo.Musica;
 import com.mpatric.mp3agic.Mp3File;
 import com.mpatric.mp3agic.ID3v1;
@@ -12,7 +14,7 @@ import java.io.File;
 
 public class LeitorMetadados {
 
-    public static Musica lerMusica(String caminhoArquivo) {
+    public static Midia lerMidia(String caminhoArquivo) {
         try {
             Mp3File mp3file = new Mp3File(caminhoArquivo);
             int duracao = (int) mp3file.getLengthInSeconds();
@@ -44,6 +46,9 @@ public class LeitorMetadados {
                 titulo = arquivo.getName().replace(".mp3", "");
             }
 
+            if (duracao > 600) {
+                return new Audio(titulo, duracao, caminhoArquivo, artista);
+            }
             return new Musica(titulo, duracao, caminhoArquivo, artista, album);
 
         } catch (Exception e) {

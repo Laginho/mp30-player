@@ -4,6 +4,7 @@ import br.ufc.poo.controle.LeitorMetadados;
 import br.ufc.poo.controle.PlayerController;
 import br.ufc.poo.controle.estrategias.ReproducaoAleatoria;
 import br.ufc.poo.excecoes.MidiaNaoEncontradaException;
+import br.ufc.poo.modelo.Midia;
 import br.ufc.poo.modelo.Musica;
 import br.ufc.poo.visao.JanelaPrincipal;
 
@@ -44,9 +45,9 @@ public class Main {
         // Musica md4 = new Musica("Billie Jean", 294, "Michael Jackson", "Thriller");
 
         // em modo arquivo
-        Musica ma1 = LeitorMetadados.lerMusica("testeMusicas/teste1.mp3");
-        Musica ma2 = LeitorMetadados.lerMusica("testeMusicas/teste2.mp3");
-        Musica ma3 = LeitorMetadados.lerMusica("testeMusicas/teste3.mp3");
+        Midia ma1 = LeitorMetadados.lerMidia("testeMusicas/teste1.mp3");
+        Midia ma2 = LeitorMetadados.lerMidia("testeMusicas/teste2.mp3");
+        Midia ma3 = LeitorMetadados.lerMidia("testeMusicas/teste3.mp3");
 
         System.out.println("[SETUP] Adicionando músicas à biblioteca...");
         // player.adicionarNaPlaylist(md1);
