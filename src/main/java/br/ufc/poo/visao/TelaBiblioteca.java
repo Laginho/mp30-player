@@ -215,7 +215,7 @@ public class TelaBiblioteca extends JPanel {
         int arquivosCarregados = 0;
 
         for (File f : arquivos) {
-            Midia m = LeitorMetadados.lerMusica(f.getAbsolutePath());
+            Midia m = LeitorMetadados.lerMidia(f.getAbsolutePath());
             if (m != null) {
                 todasAsMidias.add(m);
                 this.controller.adicionarNaPlaylist(m);

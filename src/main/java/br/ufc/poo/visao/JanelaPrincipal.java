@@ -52,7 +52,9 @@ public class JanelaPrincipal extends JFrame {
                 }
             } else {
                 try {
-                    controller.getMidiaAtual().parar();
+                    if (controller.getMidiaAtual() != null) {
+                        controller.getMidiaAtual().parar();
+                    }
                     controller.proxima();
                 } catch (MidiaNaoEncontradaException e) {
                     System.out.println("[ERRO] " + e.getMessage());
@@ -87,21 +89,18 @@ public class JanelaPrincipal extends JFrame {
                 case "Aleatório":
                     if (telaBiblioteca.isSoAudios()) {
 
-                     JOptionPane.showMessageDialog(
-                    this,
-                    "Reprodução Aleatória indisponível para áudios.",
-                    "Modo indisponível",
-                     JOptionPane.WARNING_MESSAGE
-                     );
+                        JOptionPane.showMessageDialog(
+                                this,
+                                "Reprodução Aleatória indisponível para áudios.",
+                                "Modo indisponível",
+                                JOptionPane.WARNING_MESSAGE);
 
-                     SwingUtilities.invokeLater(() ->
-                     comboModo.setSelectedItem("Sequencial")
-                        );
+                        SwingUtilities.invokeLater(() -> comboModo.setSelectedItem("Sequencial"));
 
-                     } else {
-                         controller.setEstrategia(new ReproducaoAleatoria());
-                 }
-                                break;
+                    } else {
+                        controller.setEstrategia(new ReproducaoAleatoria());
+                    }
+                    break;
                 case "Repetir":
                     controller.setEstrategia(new ReproducaoRepetir());
                     break;

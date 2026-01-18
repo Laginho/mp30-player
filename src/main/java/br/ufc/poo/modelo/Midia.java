@@ -10,6 +10,7 @@ public abstract class Midia implements Reproduzivel {
     protected int tempoAtual; // em segundos
     protected boolean reproduzindo;
     protected OnMidiaFinalizadaListener listener;
+    public static final int DURACAO_MAXIMA_MUSICA_SEGUNDOS = 600;
 
     public Midia(String titulo, String caminho, int duracao) {
         this.titulo = titulo;
@@ -82,14 +83,15 @@ public abstract class Midia implements Reproduzivel {
     }
 
     public abstract String toString();
-    
+
     // Como proposto na reunião, a distinção de aúdio e música
-    // vai ser feita com base no tempo de duração 
+    // vai ser feita com base no tempo de duração
     public boolean isMusica() {
-        return this.duracao <= 600; // 10 minutos como base 
+        return this.duracao <= DURACAO_MAXIMA_MUSICA_SEGUNDOS; // 10 minutos como base
     }
+
     public boolean isAudio() {
-        return this.duracao > 600; 
+        return this.duracao > DURACAO_MAXIMA_MUSICA_SEGUNDOS;
     }
 
 }

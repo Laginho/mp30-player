@@ -5,7 +5,6 @@ import br.ufc.poo.controle.PlayerController;
 import br.ufc.poo.controle.estrategias.ReproducaoAleatoria;
 import br.ufc.poo.excecoes.MidiaNaoEncontradaException;
 import br.ufc.poo.modelo.Midia;
-import br.ufc.poo.modelo.Musica;
 import br.ufc.poo.visao.JanelaPrincipal;
 
 // Se a IDE reclamar do ambiente Java, faça de forma manual:
