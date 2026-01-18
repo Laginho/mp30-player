@@ -12,6 +12,15 @@ public class ComponentesCustomizados {
         JSlider slider = new JSlider(0, 100, 0);
         slider.setPaintTicks(true);
         slider.setPaintLabels(false);
+        slider.setFocusable(false);
+        slider.setBorder(null);
+        slider.setToolTipText("0:00");
+        slider.addChangeListener(e -> {
+            int segundos = slider.getValue();
+            int minutos = segundos / 60;
+            int segs = segundos % 60;
+            slider.setToolTipText(String.format("%d:%02d", minutos, segs));
+        });
         return slider;
     }
   public static JButton criarBotao(String texto) {

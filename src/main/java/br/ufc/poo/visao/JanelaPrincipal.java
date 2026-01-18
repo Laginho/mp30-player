@@ -1,19 +1,19 @@
 package br.ufc.poo.visao;
 
-import javax.swing.*;
-
 import br.ufc.poo.controle.PlayerController;
 import br.ufc.poo.controle.estrategias.ReproducaoAleatoria;
 import br.ufc.poo.controle.estrategias.ReproducaoRepetir;
 import br.ufc.poo.controle.estrategias.ReproducaoSequencial;
 import br.ufc.poo.modelo.Midia;
-
 import java.awt.*;
+import javax.swing.*;
 
 public class JanelaPrincipal extends JFrame {
 
     private PlayerController controller;
     private TelaBiblioteca telaBiblioteca;
+    private boolean tocandoMusica = false; 
+    //Controla 
 
     public JanelaPrincipal() {
         // "Atributos" da classe são inicializados no construtor
@@ -28,30 +28,48 @@ public class JanelaPrincipal extends JFrame {
 
         setLayout(new BorderLayout());
 
-        // 🔹 Painel inferior (controles)
+        // 🔹 Painel inferior (controles) + Estilização dos botões
         JPanel painelControles = new JPanel(new FlowLayout());
-        JButton btnPlay = new JButton("Play");
-        JButton btnPause = new JButton("Pause");
+        JButton btnPlayPause = new JButton("▶ Play");
+        btnPlayPause.setFont(btnPlayPause.getFont().deriveFont(18f));
+        btnPlayPause.setBackground(new Color(70, 130, 180));
+        btnPlayPause.setForeground(Color.WHITE);
 
-        painelControles.add(btnPlay);
-        painelControles.add(btnPause);
+        painelControles.add(btnPlayPause);
+
         // 🔹 Ações dos botões
-        btnPlay.addActionListener(e -> {
+        btnPlayPause.addActionListener(e -> {
+            Midia midiaNoPlayer = controller.getMidiaAtual();
             Midia selecionada = telaBiblioteca.getMidiaSelecionada();
-
-            if (selecionada != null) {
-                controller.tocar(selecionada);
-                telaBiblioteca.tocarMidia(selecionada);
+            if (!tocandoMusica) {
+                // Quando não estiver tocando, ele toca
+                if (selecionada != null) {
+                    controller.tocar(selecionada);
+                    if(midiaNoPlayer == null || !midiaNoPlayer.equals(selecionada)){
+                        telaBiblioteca.tocarMidia(selecionada);
+                    } else {
+                        telaBiblioteca.retomarTimer();
+                    }
+                } else if(midiaNoPlayer != null){
+                    controller.tocar(midiaNoPlayer);
+                    telaBiblioteca.retomarTimer();
+                } else {
+                    controller.proxima();
+                    telaBiblioteca.tocarMidia(controller.getMidiaAtual());
+                }
+                btnPlayPause.setText("⏸ Pause");
+                tocandoMusica = true;
             } else {
-                // Não há seleção → deixa o controller decidir
-                controller.proxima();
-                Midia atual = controller.getMidiaAtual();
-                telaBiblioteca.tocarMidia(atual);
+                // Quando estiver tocando, ele pausa
+                controller.pausar();
+                telaBiblioteca.pausarTimer();
+                btnPlayPause.setText("▶ Play");
+                tocandoMusica = false;
             }
         });
         // Permite que o usuário escolha o modo de reprodução
         String[] modosReproducao = {
-                "Sequencial", "Aleatório", "Repetir"
+            "Sequencial", "Aleatório", "Repetir"
         };
         JComboBox<String> comboModo = new JComboBox<>(modosReproducao);
         painelControles.add(comboModo);

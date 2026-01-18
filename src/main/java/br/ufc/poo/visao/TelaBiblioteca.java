@@ -1,12 +1,12 @@
 package br.ufc.poo.visao;
-import br.ufc.poo.controle.PlayerController;
 import br.ufc.poo.controle.LeitorMetadados;
+import br.ufc.poo.controle.PlayerController;
 import br.ufc.poo.modelo.Midia;
 import br.ufc.poo.modelo.Musica;
-import javax.swing.*;
 import java.awt.*;
 import java.io.File;
 import java.util.Arrays;
+import javax.swing.*;
 
 
 public class TelaBiblioteca extends JPanel {
@@ -40,8 +40,12 @@ public class TelaBiblioteca extends JPanel {
         btnCarregarPasta = new JButton("Carregar pasta de músicas");
         btnCarregarPasta.addActionListener(e -> escolherPasta());
 
+        btnCarregarPasta.setBackground(new Color(70, 130, 180));
+        btnCarregarPasta.setForeground(Color.WHITE);
+        btnCarregarPasta.setFont(btnCarregarPasta.getFont().deriveFont(14f));
+
         
-        labelStatus = new JLabel("Nenhuma pasta carregada");
+        labelStatus = new JLabel("  Nenhuma pasta carregada");
 
         // Painel topo com botão e status
         JPanel topo = new JPanel(new BorderLayout());
@@ -49,9 +53,13 @@ public class TelaBiblioteca extends JPanel {
         topo.add(labelStatus, BorderLayout.CENTER);
 
         // Botões Próxima / Anterior
-        btnProxima = ComponentesCustomizados.criarBotao(">>");
-        btnAnterior = ComponentesCustomizados.criarBotao("<<");
-        
+        String next = "\u23E9";
+        btnProxima = ComponentesCustomizados.criarBotao(next);
+        btnProxima.setFont(btnProxima.getFont().deriveFont(18f));
+        String rewind = "\u23EA";
+        btnAnterior = ComponentesCustomizados.criarBotao(rewind);
+        btnAnterior.setFont(btnAnterior.getFont().deriveFont(18f));
+
       btnProxima.addActionListener(e -> {
     controller.proxima();
     Midia atual = controller.getMidiaAtual();
@@ -209,7 +217,18 @@ public void tocarMidia(Midia midia) {
     // Reinicia progresso
     iniciarProgresso(midia);
 }
+public void pausarTimer() {
+    if (timer != null && timer.isRunning()) {
+        timer.stop();
+    }
 
+}
+public void retomarTimer() {
+    if (timer != null && !timer.isRunning()) {
+        timer.start();
+    }
+
+}
 } 
 
 
