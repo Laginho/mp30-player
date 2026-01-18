@@ -12,6 +12,25 @@ import br.ufc.poo.excecoes.MidiaNaoEncontradaException;
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 
+/**
+ * Janela principal da aplicação MP30 Player.
+ * Contém os controles de reprodução e exibe a mídia atual.
+ * 
+ * <p>
+ * Componentes principais:
+ * </p>
+ * <ul>
+ * <li>Botões de controle (play, pause, próxima, anterior)</li>
+ * <li>Seletor de modo de reprodução</li>
+ * <li>Painel de informações da mídia atual</li>
+ * <li>Acesso à biblioteca de mídias</li>
+ * </ul>
+ * 
+ * @author Bruno Lage
+ * @version 1.0
+ * @see TelaBiblioteca
+ * @see PlayerController
+ */
 public class JanelaPrincipal extends JFrame {
 
     private PlayerController controller;

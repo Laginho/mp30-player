@@ -14,6 +14,24 @@ import java.io.File;
 import java.awt.event.ActionListener;
 import java.util.*;
 
+/**
+ * Tela da biblioteca de mídias.
+ * Permite visualizar, adicionar e gerenciar as mídias disponíveis.
+ * 
+ * <p>
+ * Funcionalidades:
+ * </p>
+ * <ul>
+ * <li>Listagem de todas as mídias</li>
+ * <li>Adição de novas mídias via seletor de arquivos</li>
+ * <li>Adição de mídias à fila de reprodução</li>
+ * </ul>
+ * 
+ * @author Bruno Lage
+ * @version 1.0
+ * @see MidiaCellRenderer
+ * @see PlayerController
+ */
 public class TelaBiblioteca extends JPanel {
 
     private DefaultListModel<Midia> model;

@@ -12,6 +12,30 @@ import br.ufc.poo.visao.JanelaPrincipal;
 // 2. javac -d bin -cp "lib/*" -sourcepath src/main/java src/main/java/br/ufc/poo/Main.java
 // 3. java -cp "bin:lib/*" br.ufc.poo.Main
 
+/**
+ * Classe principal do MP30 Player.
+ * Ponto de entrada da aplicação.
+ * 
+ * <p>
+ * Pode ser executada em dois modos:
+ * </p>
+ * <ul>
+ * <li><b>DEBUG = false:</b> Inicia a interface gráfica (GUI)</li>
+ * <li><b>DEBUG = true:</b> Executa testes via linha de comando (CLI)</li>
+ * </ul>
+ * 
+ * <p>
+ * <b>Compilação manual:</b>
+ * </p>
+ * 
+ * <pre>
+ * javac -d bin -cp "lib/*" -sourcepath src/main/java src/main/java/br/ufc/poo/Main.java
+ * java -cp "bin;lib/*" br.ufc.poo.Main
+ * </pre>
+ * 
+ * @author Bruno Lage
+ * @version 1.0
+ */
 public class Main {
     public static void main(String[] args) {
 
@@ -27,6 +51,19 @@ public class Main {
         }
     }
 
+    /**
+     * Executa testes do player via linha de comando.
+     * Útil para testar o backend sem a interface gráfica.
+     * 
+     * <p>
+     * Testes realizados:
+     * </p>
+     * <ol>
+     * <li>Reprodução sequencial</li>
+     * <li>Fila de prioridade</li>
+     * <li>Modo aleatório</li>
+     * </ol>
+     */
     public static void executarTestesCLI() {
         System.out.println("=========================================");
         System.out.println("   MP30 PLAYER - TESTE DE BACKEND (CLI)   ");

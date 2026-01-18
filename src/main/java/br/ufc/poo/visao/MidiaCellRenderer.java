@@ -4,8 +4,23 @@ import javax.swing.*;
 import java.awt.*;
 import br.ufc.poo.modelo.Midia;
 
-// A criação dessa classe vai ajudar na 
-// funcionalidade de adicionar mídias à fila de reprodução
+/**
+ * Renderizador customizado para células da lista de mídias.
+ * Exibe informações formatadas de cada mídia na biblioteca.
+ * 
+ * <p>
+ * Informações exibidas:
+ * </p>
+ * <ul>
+ * <li>Tipo da mídia (ícone)</li>
+ * <li>Nome/título</li>
+ * <li>Duração formatada</li>
+ * </ul>
+ * 
+ * @author Bruno Lage
+ * @version 1.0
+ * @see TelaBiblioteca
+ */
 public class MidiaCellRenderer extends JPanel implements ListCellRenderer<Midia> {
 
     private JLabel lblNome;
