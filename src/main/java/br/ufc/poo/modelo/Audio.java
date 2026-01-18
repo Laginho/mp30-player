@@ -6,6 +6,21 @@ import java.io.FileNotFoundException;
 import javazoom.jl.decoder.JavaLayerException;
 import javazoom.jl.player.Player;
 
+/**
+ * Representa um áudio de longa duração no player MP30 (podcasts, audiobooks,
+ * etc.).
+ * Estende {@link Midia} e é utilizada para mídias com mais de 10 minutos de
+ * duração.
+ * <p>
+ * Diferente de {@link Musica}, possui apenas o atributo autor em vez de artista
+ * e álbum.
+ * </p>
+ * 
+ * @author Bruno Lage
+ * @version 1.0
+ * @see Midia
+ * @see Musica
+ */
 public class Audio extends Midia {
 
     private Player player;
@@ -13,20 +28,38 @@ public class Audio extends Midia {
 
     private String autor;
 
-    // Construtor simplificado (modo debug)
+    /**
+     * Construtor simplificado para modo debug.
+     * 
+     * @param titulo  o título do áudio
+     * @param duracao a duração em segundos
+     * @param caminho o caminho do arquivo MP3
+     */
     public Audio(String titulo, int duracao, String caminho) {
         super(titulo, caminho, duracao);
         this.autor = "Desconhecido";
     }
 
-    // Construtor (para arquivos MP3)
-    // Ex.: new Musica("bohemian_rhapsody.mp3",
-    // "/home/user/Musicas/bohemian_rhapsody.mp3");
+    /**
+     * Construtor completo para arquivos MP3.
+     * 
+     * @param titulo  o título do áudio
+     * @param duracao a duração em segundos
+     * @param caminho o caminho do arquivo MP3
+     * @param autor   o nome do autor (usa "Desconhecido" se nulo)
+     */
     public Audio(String titulo, int duracao, String caminho, String autor) {
         super(titulo, caminho, duracao);
         this.autor = (autor != null) ? autor : "Desconhecido";
     }
 
+    /**
+     * Reproduz o áudio em uma thread separada.
+     * <p>
+     * Verifica se já está em reprodução antes de iniciar.
+     * Ao finalizar naturalmente, notifica o listener registrado.
+     * </p>
+     */
     @Override
     public void reproduzir() {
         if (this.caminho == null) {
@@ -68,6 +101,9 @@ public class Audio extends Midia {
         System.out.println("Duração: " + getDuracaoUsual());
     }
 
+    /**
+     * Para a reprodução do áudio e libera os recursos do player.
+     */
     @Override
     public void parar() {
         super.parar();

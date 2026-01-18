@@ -6,6 +6,20 @@ import java.io.FileNotFoundException;
 import javazoom.jl.decoder.JavaLayerException;
 import javazoom.jl.player.Player;
 
+/**
+ * Representa uma música no player MP30.
+ * Estende {@link Midia} e adiciona atributos específicos como artista e álbum.
+ * <p>
+ * Utiliza a biblioteca JLayer para reprodução de arquivos MP3 em uma thread
+ * separada,
+ * permitindo reprodução assíncrona e não bloqueante.
+ * </p>
+ * 
+ * @author Bruno Lage
+ * @version 1.0
+ * @see Midia
+ * @see Audio
+ */
 public class Musica extends Midia {
 
     private Player player;
@@ -13,32 +27,56 @@ public class Musica extends Midia {
 
     private String artista;
     private String album;
-    // 1.Construtores
 
-    // Construtor sem áudio (modo debug)
-    // Ex.: new Musica("Bohemian Rhapsody", 354, "Queen", "A Night at the Opera");
+    /**
+     * Construtor para modo debug (sem arquivo de áudio).
+     * 
+     * @param titulo  o título da música
+     * @param duracao a duração em segundos
+     * @param artista o nome do artista
+     * @param album   o nome do álbum
+     */
     public Musica(String titulo, int duracao, String artista, String album) {
         super(titulo, null, duracao);
         this.artista = artista;
         this.album = album;
     }
 
-    // Construtor simplificado (modo debug)
+    /**
+     * Construtor simplificado para modo debug.
+     * 
+     * @param titulo  o título da música
+     * @param duracao a duração em segundos
+     * @param caminho o caminho do arquivo MP3
+     */
     public Musica(String titulo, int duracao, String caminho) {
         super(titulo, caminho, duracao);
         this.artista = "Desconhecido";
         this.album = "Desconhecido";
     }
 
-    // Construtor (para arquivos MP3)
-    // Ex.: new Musica("bohemian_rhapsody.mp3",
-    // "/home/user/Musicas/bohemian_rhapsody.mp3");
+    /**
+     * Construtor completo para arquivos MP3.
+     * 
+     * @param titulo  o título da música
+     * @param duracao a duração em segundos
+     * @param caminho o caminho do arquivo MP3
+     * @param artista o nome do artista (usa "Desconhecido" se nulo)
+     * @param album   o nome do álbum (usa "Desconhecido" se nulo)
+     */
     public Musica(String titulo, int duracao, String caminho, String artista, String album) {
         super(titulo, caminho, duracao);
         this.artista = (artista != null) ? artista : "Desconhecido";
         this.album = (album != null) ? album : "Desconhecido";
     }
 
+    /**
+     * Reproduz a música em uma thread separada.
+     * <p>
+     * Verifica se já está em reprodução antes de iniciar.
+     * Ao finalizar naturalmente, notifica o listener registrado.
+     * </p>
+     */
     @Override
     public void reproduzir() {
         if (this.caminho == null) {
@@ -81,6 +119,9 @@ public class Musica extends Midia {
         System.out.println("Duração: " + getDuracaoUsual());
     }
 
+    /**
+     * Para a reprodução da música e libera os recursos do player.
+     */
     @Override
     public void parar() {
         super.parar();

@@ -7,6 +7,15 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+/**
+ * Estratégia de reprodução aleatória (shuffle).
+ * Embaralha a playlist e reproduz as mídias em ordem aleatória.
+ * Mantém um histórico para permitir navegação anterior/próxima.
+ * 
+ * @author Bruno Lage
+ * @version 1.0
+ * @see EstrategiaReproducao
+ */
 public class ReproducaoAleatoria implements EstrategiaReproducao {
 
     private List<Midia> listaEmbaralhada;
