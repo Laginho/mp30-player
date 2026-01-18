@@ -108,7 +108,8 @@ java -cp "bin:lib/*" br.ufc.poo.Main
 
 ## 🎨 Screenshots
 
-> *Adicione screenshots da aplicação aqui*
+[Main screen](doc/images/main_screen.png)
+[Playing screen](doc/images/playing.png)
 
 ## 📚 Conceitos de POO Aplicados
 
