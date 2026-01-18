@@ -108,8 +108,8 @@ java -cp "bin:lib/*" br.ufc.poo.Main
 
 ## 🎨 Screenshots
 
-[Main screen](doc/images/main_screen.png)
-[Playing screen](doc/images/playing.png)
+![Main screen](doc/images/main_screen.png)
+![Playing screen](doc/images/playing.png)
 
 ## 📚 Conceitos de POO Aplicados
 
