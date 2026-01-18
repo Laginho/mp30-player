@@ -4,7 +4,7 @@ import br.ufc.poo.controle.LeitorMetadados;
 import br.ufc.poo.controle.PlayerController;
 import br.ufc.poo.controle.estrategias.ReproducaoAleatoria;
 import br.ufc.poo.excecoes.MidiaNaoEncontradaException;
-import br.ufc.poo.modelo.Musica;
+import br.ufc.poo.modelo.Midia;
 import br.ufc.poo.visao.JanelaPrincipal;
 
 // Se a IDE reclamar do ambiente Java, faça de forma manual:
@@ -12,6 +12,30 @@ import br.ufc.poo.visao.JanelaPrincipal;
 // 2. javac -d bin -cp "lib/*" -sourcepath src/main/java src/main/java/br/ufc/poo/Main.java
 // 3. java -cp "bin:lib/*" br.ufc.poo.Main
 
+/**
+ * Classe principal do MP30 Player.
+ * Ponto de entrada da aplicação.
+ * 
+ * <p>
+ * Pode ser executada em dois modos:
+ * </p>
+ * <ul>
+ * <li><b>DEBUG = false:</b> Inicia a interface gráfica (GUI)</li>
+ * <li><b>DEBUG = true:</b> Executa testes via linha de comando (CLI)</li>
+ * </ul>
+ * 
+ * <p>
+ * <b>Compilação manual:</b>
+ * </p>
+ * 
+ * <pre>
+ * javac -d bin -cp "lib/*" -sourcepath src/main/java src/main/java/br/ufc/poo/Main.java
+ * java -cp "bin;lib/*" br.ufc.poo.Main
+ * </pre>
+ * 
+ * @author Bruno Lage
+ * @version 1.0
+ */
 public class Main {
     public static void main(String[] args) {
 
@@ -27,6 +51,19 @@ public class Main {
         }
     }
 
+    /**
+     * Executa testes do player via linha de comando.
+     * Útil para testar o backend sem a interface gráfica.
+     * 
+     * <p>
+     * Testes realizados:
+     * </p>
+     * <ol>
+     * <li>Reprodução sequencial</li>
+     * <li>Fila de prioridade</li>
+     * <li>Modo aleatório</li>
+     * </ol>
+     */
     public static void executarTestesCLI() {
         System.out.println("=========================================");
         System.out.println("   MP30 PLAYER - TESTE DE BACKEND (CLI)   ");
@@ -44,9 +81,9 @@ public class Main {
         // Musica md4 = new Musica("Billie Jean", 294, "Michael Jackson", "Thriller");
 
         // em modo arquivo
-        Musica ma1 = LeitorMetadados.lerMusica("testeMusicas/teste1.mp3");
-        Musica ma2 = LeitorMetadados.lerMusica("testeMusicas/teste2.mp3");
-        Musica ma3 = LeitorMetadados.lerMusica("testeMusicas/teste3.mp3");
+        Midia ma1 = LeitorMetadados.lerMidia("testeMusicas/teste1.mp3");
+        Midia ma2 = LeitorMetadados.lerMidia("testeMusicas/teste2.mp3");
+        Midia ma3 = LeitorMetadados.lerMidia("testeMusicas/teste3.mp3");
 
         System.out.println("[SETUP] Adicionando músicas à biblioteca...");
         // player.adicionarNaPlaylist(md1);

@@ -8,10 +8,22 @@ import br.ufc.poo.excecoes.MidiaNaoEncontradaException;
 import br.ufc.poo.modelo.Midia;
 import br.ufc.poo.modelo.Musica;
 import br.ufc.poo.visao.TelaBiblioteca;
-
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Controlador principal do player MP30.
+ * Gerencia a playlist, fila de reprodução e controles de mídia.
+ * <p>
+ * Utiliza o padrão Strategy para permitir diferentes modos de reprodução
+ * (sequencial, aleatório, repetir) e o padrão Observer para notificações.
+ * </p>
+ * 
+ * @author Bruno Lage
+ * @version 1.0
+ * @see EstrategiaReproducao
+ * @see Midia
+ */
 public class PlayerController {
 
     private List<Midia> playlistPrincipal;
@@ -169,14 +181,56 @@ public class PlayerController {
 
     // Logicamente, o método anterior também precisa ser adaptado para o filtro
     public void anterior() throws MidiaNaoEncontradaException {
+        Midia midiaAnterior = null;
+
         if (playlistPrincipal.isEmpty())
             throw new MidiaNaoEncontradaException("Playlist vazia.");
 
-        try {
-            Midia midiaAnterior = estrategia.obterAnterior(playlistPrincipal, midiaAtual);
+        if (midiaAtual != null) {
+            midiaAtual.parar();
+        }
+
+        System.out.println("[DEBUG] Tentando pegar mídia anterior...");
+        System.out.println("[DEBUG] Estratégia: " + estrategia.getClass().getSimpleName());
+
+        // Busca pela estratégia respeitando filtro
+        if (midiaAtual != null) {
+            Midia candidata = midiaAtual;
+            int tentativas = 0;
+
+            do {
+                try {
+                    candidata = estrategia.obterAnterior(playlistPrincipal, candidata);
+                } catch (MidiaNaoEncontradaException e) {
+                    candidata = null;
+                }
+
+                tentativas++;
+            } while (candidata != null
+                    && !passaNoFiltro(candidata)
+                    && tentativas <= playlistPrincipal.size());
+
+            if (candidata != null && passaNoFiltro(candidata)) {
+                midiaAnterior = candidata;
+            }
+        }
+
+        // Fallback: primeira mídia válida no filtro (sentido inverso)
+        if (midiaAnterior == null) {
+            for (int i = playlistPrincipal.size() - 1; i >= 0; i--) {
+                Midia m = playlistPrincipal.get(i);
+                if (passaNoFiltro(m)) {
+                    midiaAnterior = m;
+                    break;
+                }
+            }
+        }
+
+        // Tocar ou parar
+        if (midiaAnterior != null) {
             tocar(midiaAnterior);
-        } catch (MidiaNaoEncontradaException e) {
-            System.out.println("[ERROR] " + e.getMessage());
+        } else {
+            midiaAtual = null;
         }
     }
 

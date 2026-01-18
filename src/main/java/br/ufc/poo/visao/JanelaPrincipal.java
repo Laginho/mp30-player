@@ -12,6 +12,25 @@ import br.ufc.poo.excecoes.MidiaNaoEncontradaException;
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 
+/**
+ * Janela principal da aplicação MP30 Player.
+ * Contém os controles de reprodução e exibe a mídia atual.
+ * 
+ * <p>
+ * Componentes principais:
+ * </p>
+ * <ul>
+ * <li>Botões de controle (play, pause, próxima, anterior)</li>
+ * <li>Seletor de modo de reprodução</li>
+ * <li>Painel de informações da mídia atual</li>
+ * <li>Acesso à biblioteca de mídias</li>
+ * </ul>
+ * 
+ * @author Bruno Lage
+ * @version 1.0
+ * @see TelaBiblioteca
+ * @see PlayerController
+ */
 public class JanelaPrincipal extends JFrame {
 
     private PlayerController controller;
@@ -52,7 +71,9 @@ public class JanelaPrincipal extends JFrame {
                 }
             } else {
                 try {
-                    controller.getMidiaAtual().parar();
+                    if (controller.getMidiaAtual() != null) {
+                        controller.getMidiaAtual().parar();
+                    }
                     controller.proxima();
                 } catch (MidiaNaoEncontradaException e) {
                     System.out.println("[ERRO] " + e.getMessage());
@@ -87,21 +108,18 @@ public class JanelaPrincipal extends JFrame {
                 case "Aleatório":
                     if (telaBiblioteca.isSoAudios()) {
 
-                     JOptionPane.showMessageDialog(
-                    this,
-                    "Reprodução Aleatória indisponível para áudios.",
-                    "Modo indisponível",
-                     JOptionPane.WARNING_MESSAGE
-                     );
+                        JOptionPane.showMessageDialog(
+                                this,
+                                "Reprodução Aleatória indisponível para áudios.",
+                                "Modo indisponível",
+                                JOptionPane.WARNING_MESSAGE);
 
-                     SwingUtilities.invokeLater(() ->
-                     comboModo.setSelectedItem("Sequencial")
-                        );
+                        SwingUtilities.invokeLater(() -> comboModo.setSelectedItem("Sequencial"));
 
-                     } else {
-                         controller.setEstrategia(new ReproducaoAleatoria());
-                 }
-                                break;
+                    } else {
+                        controller.setEstrategia(new ReproducaoAleatoria());
+                    }
+                    break;
                 case "Repetir":
                     controller.setEstrategia(new ReproducaoRepetir());
                     break;

@@ -3,6 +3,15 @@ package br.ufc.poo.controle.estrategias;
 import br.ufc.poo.modelo.Midia;
 import java.util.List;
 
+/**
+ * Estratégia de reprodução sequencial.
+ * Reproduz as mídias na ordem em que aparecem na playlist,
+ * avançando para a próxima ou voltando para a anterior.
+ * 
+ * @author Bruno Lage
+ * @version 1.0
+ * @see EstrategiaReproducao
+ */
 public class ReproducaoSequencial implements EstrategiaReproducao {
 
     @Override

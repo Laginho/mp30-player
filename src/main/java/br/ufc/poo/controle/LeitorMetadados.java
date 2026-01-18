@@ -1,18 +1,36 @@
 package br.ufc.poo.controle;
 
+import br.ufc.poo.modelo.Audio;
+import br.ufc.poo.modelo.Midia;
 import br.ufc.poo.modelo.Musica;
 import com.mpatric.mp3agic.Mp3File;
 import com.mpatric.mp3agic.ID3v1;
 import com.mpatric.mp3agic.ID3v2;
-// import com.mpatric.mp3agic.InvalidDataException;
-// import com.mpatric.mp3agic.UnsupportedTagException;
 
 import java.io.File;
-// import java.io.IOException;
 
+/**
+ * Classe utilitária para leitura de metadados de arquivos MP3.
+ * Utiliza a biblioteca mp3agic para extrair informações como
+ * título, artista, álbum e duração dos arquivos.
+ * 
+ * @author Bruno Lage
+ * @version 1.0
+ */
 public class LeitorMetadados {
 
-    public static Musica lerMusica(String caminhoArquivo) {
+    /**
+     * Lê os metadados de um arquivo MP3 e cria o objeto de mídia apropriado.
+     * <p>
+     * Retorna {@link Musica} para arquivos com até 10 minutos,
+     * ou {@link Audio} para arquivos mais longos.
+     * </p>
+     * 
+     * @param caminhoArquivo o caminho completo do arquivo MP3
+     * @return uma instância de {@link Midia} (Musica ou Audio), ou null se houver
+     *         erro
+     */
+    public static Midia lerMidia(String caminhoArquivo) {
         try {
             Mp3File mp3file = new Mp3File(caminhoArquivo);
             int duracao = (int) mp3file.getLengthInSeconds();
@@ -44,6 +62,9 @@ public class LeitorMetadados {
                 titulo = arquivo.getName().replace(".mp3", "");
             }
 
+            if (duracao > 600) {
+                return new Audio(titulo, duracao, caminhoArquivo, artista);
+            }
             return new Musica(titulo, duracao, caminhoArquivo, artista, album);
 
         } catch (Exception e) {
